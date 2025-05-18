@@ -28,12 +28,13 @@
  * 
  */
 typedef enum {
+    kNoSig,
     Start,
     Pause,
     Terminate,
     Left,
     Right,
-    Up,
+    // Up,
     Down,
     Action
 } UserAction_t;

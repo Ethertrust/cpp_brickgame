@@ -26,8 +26,8 @@ void userInput(UserAction_t action, bool hold) {
       case Right:
         try_right(state);
         break;
-      case Up:
-        break;
+      // case Up:
+      //   break;
       case Down:
         while (!try_down(state))
           ;  //  try_down(state);
