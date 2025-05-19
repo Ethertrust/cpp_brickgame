@@ -15,7 +15,7 @@ class TetrisConsoleView : public BaseView {
  private:
   UserAction t_action_;
 
-  TetrisGameData *t_data_;
+  TetrisModel *t_data_;
   TetrisController *controller_;
   void TetrisMainLoop();
   void ModelConnect();

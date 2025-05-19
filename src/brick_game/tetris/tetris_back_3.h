@@ -23,21 +23,28 @@
 #include <time.h>
 #include <stdbool.h>
 
+
+/**
+ * @brief Enum with possible game states
+ * 
+ */
+typedef enum { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver } GameState;
+
 /**
  * @brief Enum with possible user Action
  * 
  */
 typedef enum {
     kNoSig,
-    Start,
-    Pause,
-    Terminate,
-    Left,
-    Right,
-    // Up,
-    Down,
-    Action
-} UserAction_t;
+    kLeft,
+    kRight,
+    kDown,
+    kUp,
+    kSpaceBtn, 
+    kEnterBtn, 
+    kEscBtn,    
+    kTabBtn     
+} UserAction;
 
 /**
  * @brief enum with all block types of tetris
@@ -98,7 +105,8 @@ typedef struct{
     block_type block;
     block_type next_block;
     Rectangle_t rect;
-}GameState_t;
+    GameState t_game_status;
+} TetrisModel;
 
 /**
  * @brief make action from user input
@@ -106,7 +114,7 @@ typedef struct{
  * @param action current player action
  * @param hold contain active user hold
  */
-void userInput(UserAction_t action, bool hold);
+void userInput(UserAction action, bool hold);
 
 /**
  * @brief 
@@ -120,7 +128,7 @@ GameInfo_t updateCurrentState();
  * 
  * @return initialisation tetris map
  */
-void init_tetris_map(GameState_t* state);
+void init_tetris_map(TetrisModel** state);
 
 int get_active_position(Rectangle_t* rect, bool rotate);
 int get_max_active_x();
@@ -132,39 +140,39 @@ int get_min_active_y();
  * @brief moves active piece in left if is no obstacle
  * @param state current game state
  */
-void try_left(GameState_t* state);
+void try_left(TetrisModel* state);
 
 /**
  * @brief moves active piece in right if is no obstacle
  * @param state current game state
  */
-void try_right(GameState_t* state);
+void try_right(TetrisModel* state);
 
 /**
  * @brief moves active piece down if is no obstacle
  * @param state current game state
  * @return 1 if impossible to move down 
  */
-int try_down(GameState_t* state);
+int try_down(TetrisModel* state);
 
 /**
  * @brief rotate active piece on 90 degrees
  * @param state current game state
  */
-void rotate_block(GameState_t* state);
+void rotate_block(TetrisModel* state);
 
 /**
  * @brief delete all dynamic objects
  * @param state current game state
  */
-void clear_tetris(GameState_t* state);
+void clear_tetris(TetrisModel* state);
 
 /**
  * @brief spawn new block on tetris map
  * @param state current game state
  * @param block type of spawn block
  */
-void spawn_new_block(GameState_t* state);
+void spawn_new_block(TetrisModel* state);
 
 /**
  * @brief Get the random block object
@@ -178,39 +186,39 @@ block_type get_random_block();
  * @param state current game state
  * @return 1 if is game over
  */
-int get_score(GameState_t* state);
+int get_score(TetrisModel* state);
 
 /**
  * @brief delete specified line
  * @param state current game state
  * @param line y position of line to delete
  */
-void delete_line(GameState_t* state, int line);
+void delete_line(TetrisModel* state, int line);
 
 /**
  * @brief turns all active blocks in nonactive
  * @param state current game state
  */
-void active_to_block(GameState_t* state);
+void active_to_block(TetrisModel* state);
 
 /**
  * @brief set new highscore, if score > highscore
  * @param state current game state
  */
-void set_new_highscore(GameState_t* state);
+void set_new_highscore(TetrisModel* state);
 
 /**
  * @brief set new level depending on points scored
  * @param state current game state
  */
-void set_new_level(GameState_t* state);
+void set_new_level(TetrisModel* state);
 
 /**
  * @brief set new game state or return current game state if *state == NULL
  * @param state current game state
  * @return current game state
  */
-GameState_t* get_set_current_map(GameState_t* state);
+TetrisModel* get_set_current_map(TetrisModel* state);
 
 /**
  * @brief chooses block state
@@ -226,7 +234,7 @@ void choose_blstate(int** buf, block_type bt, position pos, int spawn_pos_x);
  * @param state current game state
  * @param spawn_pos_x x coordinate for spawn position
  */
-void spawn_block(GameState_t *state, int spawn_pos_x);
+void spawn_block(TetrisModel *state, int spawn_pos_x);
 
 /**
  * @brief safe memory allocation
@@ -260,6 +268,27 @@ static const int block_state[7][4][16] = \
  /*RL_block*/{{2,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0},{0,2,0,0,0,2,0,0,2,2,0,0,0,0,0,0},{2,2,2,0,0,0,2,0,0,0,0,0,0,0,0,0},{2,2,0,0,2,0,0,0,2,0,0,0,0,0,0,0}},                     \
  /*RZ_block*/{{0,2,2,0,2,2,0,0,0,0,0,0,0,0,0,0},{2,0,0,0,2,2,0,0,0,2,0,0,0,0,0,0},{0,2,2,0,2,2,0,0,0,0,0,0,0,0,0,0},{2,0,0,0,2,2,0,0,0,2,0,0,0,0,0,0}}                      \
 };
+
+typedef void (*Action)();
+
+const Action kTetrisActionTable[6][9] = {
+    // kStart
+    {NULL, NULL, NULL, NULL, NULL, StartGame, StartGame, ExitGame, NULL},
+    // kSpawn
+    {SpawnNewTetromino, SpawnNewTetromino, SpawnNewTetromino, SpawnNewTetromino,
+     SpawnNewTetromino, SpawnNewTetromino, SpawnNewTetromino, SpawnNewTetromino,
+     SpawnNewTetromino},
+    // kMoving
+    {NULL, MoveTetrominoLeft, MoveTetrominoRight, MoveTetrominoDown,
+     RotateTetromino, DropTetromino, DropTetromino, ExitGame, SetPause},
+    // kCollide
+    {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    // kPause
+    {NULL, NULL, NULL, NULL, NULL, NULL, CancelPause, ExitGame, CancelPause},
+    // kGameOver
+    {ExitGame, ExitGame, ExitGame, ExitGame, ExitGame, ExitGame, ExitGame,
+     ExitGame, ExitGame}};
+
 
 
 #endif

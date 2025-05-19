@@ -13,6 +13,8 @@ namespace s21 {
 
 enum class Direction { kUp, kDown, kRight, kLeft };
 
+enum class GameState { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver };
+
 struct SnakeGameData {
   Coordinates fruit_coord;
   std::vector<Coordinates> snake_coord;

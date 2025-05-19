@@ -18,19 +18,19 @@ static constexpr int kIntervalMs[] = {500, 420, 340, 260, 230,
                                       200, 180, 160, 140, 125};
 }  // namespace GameSizes
 
-enum class GameState { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver };
+// enum class GameState { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver };
 
-enum class UserAction {
-  kNoSig = 0,
-  kLeft,      // 1
-  kRight,     // 2
-  kDown,      // 3
-  kUp,        // 4
-  kSpaceBtn,  // 5
-  kEnterBtn,  // 6
-  kEscBtn,    // 7
-  kTabBtn     // 8
-};
+// enum class UserAction {
+//   kNoSig = 0,
+//   kLeft,      // 1
+//   kRight,     // 2
+//   kDown,      // 3
+//   kUp,        // 4
+//   kSpaceBtn,  // 5
+//   kEnterBtn,  // 6
+//   kEscBtn,    // 7
+//   kTabBtn     // 8
+// };
 
 struct Coordinates {
   Coordinates() : x(0), y(0) {}

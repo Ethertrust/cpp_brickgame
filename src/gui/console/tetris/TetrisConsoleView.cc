@@ -45,7 +45,7 @@ void TetrisConsoleView::Rendering() {
 
 void TetrisConsoleView::ModelConnect() {
   controller_->UpdateModelData(t_action_);
-  TetrisGameData tmp_data = controller_->GetModelData();
+  TetrisModel tmp_data = controller_->GetModelData();
   t_action_ = UserAction::kNoSig;
 }
 

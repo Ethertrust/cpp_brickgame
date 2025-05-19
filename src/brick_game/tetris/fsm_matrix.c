@@ -2,32 +2,32 @@
 
 #include <stdio.h>
 
-UserAction_t player_input(int input) {
-  UserAction_t action = 0;
+UserAction player_input(int input) {
+  UserAction action = 0;
   switch (input) {
     case KEY_LEFT:
-      action = Left;
+      action = kLeft;
       break;
     case KEY_RIGHT:
-      action = Right;
+      action = kRight;
       break;
     case KEY_DOWN:
-      action = Down;
+      action = kDown;
       break;
     case KEY_UP:
-      action = Action;
+      action = kUp;
       break;
     case 'p':
     case 'P':
-      action = Pause;
+      action = kPause;
       break;
     case 'q':
     case 'Q':
-      action = Terminate;
+      action = kTerminate;
       break;
     case 's':
     case 'S':
-      action = Start;
+      action = kStart;
       break;
     default:
       break;
@@ -41,9 +41,43 @@ void game_pause() {
   while (c != 'p' && c != 's' && c != 'q') c = getch();
 }
 
+void StartGame(TetrisModel *state) {
+  // SetGameDataDefault();
+  state.t_game_status = GameState::kSpawn;
+}
+
+void UpdateModelData(TetrisModel** state, UserAction act) {
+  t_data_.is_modified = false;
+  TetrisModel data_cast = t_data_;
+
+  uint64_t curr_time = last_moving_time_;
+  if (t_data_.t_game_status != GameState::kPause) {
+    curr_time = GetCurrTime();
+  }
+
+  Action func = kTetrisActionTable[static_cast<int>((*state)->t_game_status)]
+                                  [static_cast<int>(act)];
+  if (func) {
+    (this->*func)();
+  }
+
+  if (t_data_.t_game_status == GameState::kMoving) {
+    if (curr_time - last_moving_time_ > curr_delay_) {
+      last_moving_time_ = curr_time;
+      if (CheckCollide()) UpdateBoard();
+      MoveTetrominoDown();
+    }
+    UpdateLevel();
+  }
+
+  if (t_data_ != data_cast) {
+    t_data_.is_modified = true;
+  }
+}
+
 void game_loop_2() {
   bool is_game = true;
-  GameState_t state = {};
+  TetrisModel state = {};
   init_tetris_map(&state);
   print_start_menu(*state.info);
   state.block = get_random_block();
@@ -72,12 +106,12 @@ void game_loop_2() {
   clear_tetris(&state);
 }
 
-int game_input(GameState_t *state) {
+int game_input(TetrisModel *state) {
   int result = 0;
   int input = 0;
   if (kbhit()) {
     input = getch();
-    UserAction_t t = player_input(input);
+    UserAction t = player_input(input);
     userInput(t, true);
     if (t == Down) result = 1;
     clear();
@@ -92,7 +126,7 @@ int game_input(GameState_t *state) {
   return result;
 }
 
-bool game_process(GameState_t *state) {
+bool game_process(TetrisModel *state) {
   bool result = true;
   if (try_down(state)) {
     active_to_block(state);

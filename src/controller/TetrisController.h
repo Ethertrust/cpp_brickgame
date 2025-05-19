@@ -2,7 +2,8 @@
 #ifndef CONTROLLER_TETRISCONTROLLER_H_
 #define CONTROLLER_TETRISCONTROLLER_H_
 
-#include "../brick_game/tetris/TetrisModel.h"
+// #include "../brick_game/tetris/TetrisModel.h"
+#include "../static_L/tetris_back.h"
 
 namespace s21 {
 
@@ -12,14 +13,15 @@ class TetrisController {
   ~TetrisController() = default;
 
   void UpdateModelData(UserAction act = UserAction::kNoSig) {
-    model_->UpdateModelData(act);
+    TetrisUpdateModelData(&model_, act);
   }
 
-  void SetModelDataDefault() { model_->SetGameDataDefault(); }
-  TetrisGameData &GetModelData() { return model_->GetTetrisGameData(); }
+  void SetModelDataDefault() { init_tetris_map(&model_); }
+  TetrisModel &GetModelData() { return *model_; }
 
  private:
   TetrisModel *model_;
+  // TetrisModel *model_;
 };
 
 }  // namespace s21
