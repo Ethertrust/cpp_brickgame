@@ -15,7 +15,7 @@ void TetrisConsoleView::Start() {
   TetrisMainLoop();
   if (t_data_->t_game_status == GameState::kGameOver ||
       t_data_->t_game_status == GameState::kGameOver) {
-    GameResultRendering(false, t_data_->t_best_score, t_data_->t_score);
+    GameResultRendering(false, t_data_->info->high_score, t_data_->info->score);
   }
 }
 
