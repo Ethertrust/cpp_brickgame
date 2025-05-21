@@ -1,5 +1,6 @@
 // Copyright 2025 shericen
 #include <gtest/gtest.h>
+
 #include "../brick_game/tetris/TetrisModel.h"
 
 class TetrisGameTest : public ::testing::Test {
@@ -34,7 +35,8 @@ TEST_F(TetrisGameTest, MoveLeftUntilCant) {
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kStart);
   tetris_model_.UpdateModelData(s21::UserAction::kSpaceBtn);
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kSpawn);
-  GTEST_LOG_(INFO) << static_cast<int>(tetris_game_data_->t_curr.GetShape()); // 7
+  GTEST_LOG_(INFO) << static_cast<int>(
+      tetris_game_data_->t_curr.GetShape());  // 7
   tetris_model_.UpdateModelData(s21::UserAction::kNoSig);
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kMoving);
 
@@ -70,8 +72,9 @@ TEST_F(TetrisGameTest, MoveRightUntilCant) {
   tetris_game_data_ = &tetris_model_.GetTetrisGameData();
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kStart);
   tetris_model_.UpdateModelData(s21::UserAction::kSpaceBtn);
-  EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kSpawn); 
-  GTEST_LOG_(INFO) << static_cast<int>(tetris_game_data_->t_curr.GetShape()); //6
+  EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kSpawn);
+  GTEST_LOG_(INFO) << static_cast<int>(
+      tetris_game_data_->t_curr.GetShape());  // 6
   tetris_model_.UpdateModelData(s21::UserAction::kNoSig);
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kMoving);
 
@@ -146,7 +149,7 @@ TEST_F(TetrisGameTest, Rotate) {
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kStart);
   tetris_model_.UpdateModelData(s21::UserAction::kSpaceBtn);
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kSpawn);
-  GTEST_LOG_(INFO) << static_cast<int>(tetris_game_data_->t_curr.GetShape()); 
+  GTEST_LOG_(INFO) << static_cast<int>(tetris_game_data_->t_curr.GetShape());
   tetris_model_.UpdateModelData(s21::UserAction::kNoSig);
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kMoving);
   // usleep(510 * 1000);
@@ -162,7 +165,8 @@ TEST_F(TetrisGameTest, LeftBorderRotate) {
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kStart);
   tetris_model_.UpdateModelData(s21::UserAction::kSpaceBtn);
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kSpawn);
-  GTEST_LOG_(INFO) << static_cast<int>(tetris_game_data_->t_curr.GetShape());//
+  GTEST_LOG_(INFO) << static_cast<int>(
+      tetris_game_data_->t_curr.GetShape());  //
   tetris_model_.UpdateModelData(s21::UserAction::kNoSig);
   EXPECT_EQ(tetris_game_data_->t_game_status, s21::GameState::kMoving);
 

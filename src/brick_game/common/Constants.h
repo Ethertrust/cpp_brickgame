@@ -18,7 +18,8 @@ static constexpr int kIntervalMs[] = {500, 420, 340, 260, 230,
                                       200, 180, 160, 140, 125};
 }  // namespace GameSizes
 
-// enum class GameState { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver };
+// enum class GameState { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver
+// };
 
 // enum class UserAction {
 //   kNoSig = 0,

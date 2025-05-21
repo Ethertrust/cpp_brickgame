@@ -13,11 +13,11 @@ class TetrisController {
   ~TetrisController() = default;
 
   void UpdateModelData(UserAction act = UserAction::kNoSig) {
-    TetrisUpdateModelData(&model_, act);
+    TetrisUpdateModelData(model_, act);
   }
 
-  void SetModelDataDefault() { init_tetris_map(&model_); }
-  TetrisModel &GetModelData() { return *model_; }
+  void SetModelDataDefault() { init_tetris_map(&model_->model); }
+  Model &GetModelData() { return *(model_->model); }
 
  private:
   TetrisModel *model_;

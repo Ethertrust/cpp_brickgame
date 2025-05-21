@@ -1,5 +1,5 @@
 /**
- * @file tetris_back_3.c
+ * @file tetris_back.c
  * @author karstarl
  * @brief
  * @version 0.1
@@ -8,41 +8,41 @@
  * @copyright Copyright (c) 2024
  *
  */
-#include "tetris_back_3.h"
+#include "tetris_back.h"
 
-void userInput(UserAction action, bool hold) {
-  if (hold) {
-    TetrisModel *state = get_set_current_map(NULL);
-    switch (action) {
-      case kSpaceBtn:
-        break;
-      case kEnterBtn:
-        break;  
-      case kEscBtn:
-        break;
-      case kTabBtn:
-        break;
-      case kLeft:
-        try_left(state);
-        break;
-      case kRight:
-        try_right(state);
-        break;
-      case kDown:
-        while (!try_down(state))
-          ;  //  try_down(state);
-        break;
-      case kUp:
-        rotate_block(state);
-        break;
-      default:
-        break;
-    }
-  }
-}
+// void userInput(UserAction action, bool hold) {
+//   if (hold) {
+//     Model *state = get_set_current_map(NULL);
+//     switch (action) {
+//       case kSpaceBtn:
+//         break;
+//       case kEnterBtn:
+//         break;  
+//       case kEscBtn:
+//         break;
+//       case kTabBtn:
+//         break;
+//       case kLeft:
+//         try_left(state);
+//         break;
+//       case kRight:
+//         try_right(state);
+//         break;
+//       case kDown:
+//         while (!try_down(state))
+//           ;  //  try_down(state);
+//         break;
+//       case kUp:
+//         rotate_block(state);
+//         break;
+//       default:
+//         break;
+//     }
+//   }
+// }
 
 GameInfo_t updateCurrentState() {
-  TetrisModel *state = get_set_current_map(NULL);
+  Model *state = get_set_current_map(NULL);
   return *state->info;
 }
 
@@ -53,7 +53,7 @@ void choose_blstate(int** buf, block_type bt, position pos, int spawn_pos_x) {
       buf[i][j + spawn_pos_x] = block_state[bt][pos][i * 4 + j];
 }
 
-void spawn_block(TetrisModel* state, int spawn_pos_x) {
+void spawn_block(Model* state, int spawn_pos_x) {
   state->rect.pos = 0;
   choose_blstate(state->info->field, state->block, state->rect.pos,
                  spawn_pos_x);
@@ -63,7 +63,9 @@ void spawn_block(TetrisModel* state, int spawn_pos_x) {
   state->rect.y2 = 3;
 }
 
-void init_tetris_map(TetrisModel **state) {
+void init_tetris_map(Model **state) {
+  (*state)->last_moving_time_ = GetCurrTime();
+  (*state)->curr_delay_ = kIntervalMs[0];
   (*state)->info = (GameInfo_t *)s21_malloc(
       1 * sizeof(GameInfo_t));  //(GameInfo_t *)calloc(1, sizeof(GameInfo_t));
   (*state)->info->level = 1;
@@ -90,7 +92,7 @@ void init_tetris_map(TetrisModel **state) {
   get_set_current_map(*state);
 }
 
-void clear_tetris(TetrisModel *state) {
+void clear_tetris(Model *state) {
   for (int i = 0; i < WINDOW_HEIGHT; ++i) {
     free(state->info->field[i]);
     state->info->field[i] = NULL;
@@ -100,7 +102,7 @@ void clear_tetris(TetrisModel *state) {
   free(state->info);
 }
 
-void try_left(TetrisModel *state) {
+void try_left(Model *state) {
   bool is_can = true;
   if (state->rect.x1 >= 0) {
     for (int i = state->rect.y1; i <= state->rect.y2; ++i) {
@@ -131,7 +133,7 @@ void try_left(TetrisModel *state) {
   }
 }
 
-void try_right(TetrisModel *state) {
+void try_right(Model *state) {
   bool is_can = true;
   if (state->rect.x2 < WINDOW_WIDTH + 1) {
     for (int i = state->rect.y1; i <= state->rect.y2; ++i) {
@@ -164,7 +166,7 @@ void try_right(TetrisModel *state) {
   }
 }
 
-int try_down(TetrisModel *state) {
+int try_down(Model *state) {
   int result = 0;
   bool is_can = true;
   if (state->rect.y2 == WINDOW_HEIGHT - 1) {
@@ -200,35 +202,8 @@ int try_down(TetrisModel *state) {
   return result;
 }
 
-void spawn_new_block(TetrisModel *state) {
-  switch (state->block) {
-    case L_block:
-      spawn_block(state, SPAWN_POS_X);
-      break;
-    case I_block:
-      spawn_block(state, SPAWN_POS_X);
-      break;
-    case T_block:
-      spawn_block(state, SPAWN_POS_X);
-      break;
-    case square:
-      spawn_block(state, SPAWN_POS_X);
-      break;
-    case Z_block:
-      spawn_block(state, SPAWN_POS_X);
-      break;
-    case RL_block:
-      spawn_block(state, SPAWN_POS_X);
-      break;
-    case RZ_block:
-      spawn_block(state, SPAWN_POS_X);
-      break;
-    default:
-      break;
-  }
-}
 
-void rotate_block(TetrisModel *state) {
+void rotate_block(Model *state) {
   // int y_max = state->rect.y2 - state->rect.y1 + 1;
   // int x_max = state->rect.x2 - state->rect.x1 + 1;
   int **buffer = s21_malloc_matrix(4, 4);
@@ -269,7 +244,7 @@ void rotate_block(TetrisModel *state) {
 
 block_type get_random_block() { return (rand() * clock()) % 7; }
 
-int get_score(TetrisModel *state) {
+int get_score(Model *state) {
   int is_game_over = 0;
   for (int i = 0; i < WINDOW_WIDTH; ++i)
     if (state->info->field[1][i] == block)
@@ -300,7 +275,7 @@ int get_score(TetrisModel *state) {
   return is_game_over;
 }
 
-void delete_line(TetrisModel *state, int line) {
+void delete_line(Model *state, int line) {
   for (int i = 0; i < WINDOW_WIDTH; ++i) state->info->field[line][i] = empty;
 
   for (int i = line; i > 0; --i)
@@ -308,14 +283,14 @@ void delete_line(TetrisModel *state, int line) {
       state->info->field[i][j] = state->info->field[i - 1][j];
 }
 
-void active_to_block(TetrisModel *state) {
+void active_to_block(Model *state) {
   for (int i = 0; i < WINDOW_HEIGHT; ++i)
     for (int j = 0; j < WINDOW_WIDTH; ++j)
       if (state->info->field[i][j] == active_block)
         state->info->field[i][j] = block;
 }
 
-void set_new_highscore(TetrisModel *state) {
+void set_new_highscore(Model *state) {
   FILE *fp = fopen(FILE_SCORE, "wb");
   if (!fp) return;
   fprintf(fp, "%d", state->info->score);
@@ -323,7 +298,7 @@ void set_new_highscore(TetrisModel *state) {
   state->info->high_score = state->info->score;
 }
 
-void set_new_level(TetrisModel *state) {
+void set_new_level(Model *state) {
   int result = 1;
   int score = state->info->score;
   if (score < 600)
@@ -359,8 +334,8 @@ void set_new_level(TetrisModel *state) {
   state->info->level = result;
 }
 
-TetrisModel *get_set_current_map(TetrisModel *state) {
-  static TetrisModel *state_;
+Model *get_set_current_map(Model *state) {
+  static Model *state_;
   if (state != NULL) {
     state_ = state;
   }

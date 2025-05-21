@@ -195,17 +195,18 @@ void TetrisModel::RotateTetromino() {
   auto tmp_tetromino = t_data_.t_curr;
   tmp_tetromino.Rotate();
   bool can_rotate = true;
-  if(tmp_tetromino.GetMinY()<=0) {
+  if (tmp_tetromino.GetMinY() <= 0) {
     can_rotate = false;
-  }
-  else {
+  } else {
     for (const auto& coord : tmp_tetromino.GetCoords()) {
-      if ((!(coord.y >= 0 && coord.y <= GameSizes::kFieldHeight) || !(coord.x>=0 && coord.x<=GameSizes::kFieldWidth)) || t_data_.t_field_[coord.y - 1][coord.x].first) {
+      if ((!(coord.y >= 0 && coord.y <= GameSizes::kFieldHeight) ||
+           !(coord.x >= 0 && coord.x <= GameSizes::kFieldWidth)) ||
+          t_data_.t_field_[coord.y - 1][coord.x].first) {
         can_rotate = false;
         break;
       }
     }
-  } 
+  }
   if (can_rotate) {
     t_data_.t_curr = tmp_tetromino;
   }

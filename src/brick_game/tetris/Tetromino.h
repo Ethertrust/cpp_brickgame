@@ -24,7 +24,7 @@ enum struct TetroShape {
   LShape
 };
 
-typedef enum TetroPosition {Top, Right, Bottom, Left} position;
+typedef enum TetroPosition { Top, Right, Bottom, Left } position;
 
 namespace TetroCoords {
 static constexpr int coordsTable[8][4][4][2] = {

@@ -4,4 +4,4 @@
 
 // Объявления функций
 
-#endif // SNAKE_BACK_H
+#endif  // SNAKE_BACK_H

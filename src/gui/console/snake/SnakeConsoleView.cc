@@ -13,7 +13,8 @@ void SnakeConsoleView::Start() {
   SnakeMainLoop();
   if (data_->game_status == GameState::kGameOver ||
       data_->game_status == GameState::kGameOver) {
-    GameResultRendering(data_->is_victory, data_->best_score, data_->curr_score);
+    GameResultRendering(data_->is_victory, data_->best_score,
+                        data_->curr_score);
   }
 }
 
