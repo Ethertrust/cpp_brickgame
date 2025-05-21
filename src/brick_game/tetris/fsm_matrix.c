@@ -99,10 +99,10 @@ void TetrisUpdateModelData(TetrisModel* state, UserAction act) {
   if (state->t_game_status == kMoving) {
     if (curr_time - state->model->last_moving_time_ > state->model->curr_delay_) {
       state->model->last_moving_time_ = curr_time;
-      if (CheckCollide()) UpdateBoard();
+      game_process(state);
       MoveTetrominoDown(state);
     }
-    UpdateLevel();
+    UpdateLevel(state->model);
   }
 }
 
@@ -157,20 +157,17 @@ void TetrisUpdateModelData(TetrisModel* state, UserAction act) {
 //   return result;
 // }
 
-// bool game_process(TetrisModel *state) {
-//   bool result = true;
-//   if (try_down(state)) {
-//     active_to_block(state);
-//     clear();
-//     if (get_score(state)) {
-//       result = false;
-//     } else {
-//       state->block = state->next_block;
-//       spawn_new_block(state);
-//       state->next_block = get_random_block();
-//     }
-//   }
-//   print_game_window(updateCurrentState(), state->block, state->next_block);
-//   refresh();
-//   return result;
-// }
+bool game_process(TetrisModel *state) {
+  bool result = true;
+  if (try_down(state->model)) {
+    active_to_block(state->model);
+    if (get_score(state->model)) {
+      result = false;
+    } else {
+      state->model->block = state->model->next_block;
+      SpawnNewTetromino(state);
+      state->model->next_block = get_random_block();
+    }
+  }
+  return result;
+}

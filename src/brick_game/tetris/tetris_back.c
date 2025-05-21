@@ -41,6 +41,19 @@
 //   }
 // }
 
+void UpdateLevel(Model* state) {
+  if (state->info->level < 10 && state->info->score > 600) {
+    state->info->level = state->info->score / 600;
+  }
+  state->curr_delay_ = kIntervalMs[state->info->level- 1];
+}
+
+uint64_t GetCurrTime() {
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return (uint64_t)(tv.tv_sec) * 1000 + tv.tv_usec / 1000;
+}
+
 GameInfo_t updateCurrentState() {
   Model *state = get_set_current_map(NULL);
   return *state->info;
@@ -242,7 +255,7 @@ void rotate_block(Model *state) {
   free_matrix(buffer, 4);
 }
 
-block_type get_random_block() { return (rand() * clock()) % 7; }
+block_type get_random_block() { return (rand() * GetCurrTime()) % 7; }
 
 int get_score(Model *state) {
   int is_game_over = 0;
@@ -353,9 +366,9 @@ void *s21_malloc(const size_t size) {
 
 int **s21_malloc_matrix(const size_t y, const size_t x) {
   int **malloc_ptr = (int **)s21_malloc(sizeof(int *) * y);
-  for (int i = 0; i < y; i++) {
+  for (size_t i = 0; i < y; i++) {
     malloc_ptr[i] = (int *)s21_malloc(sizeof(int) * x);
-    for (int j = 0; j < x; j++) malloc_ptr[i][j] = empty;
+    for (size_t j = 0; j < x; j++) malloc_ptr[i][j] = empty;
   }
   return malloc_ptr;
 }

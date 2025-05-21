@@ -25,7 +25,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include <time.h>
 
 /**
  * @brief enum with all block types of tetris
@@ -105,6 +104,10 @@ typedef struct {
 //  * @param hold contain active user hold
 //  */
 // void userInput(UserAction action, bool hold);
+
+void UpdateLevel(Model* state);
+
+uint64_t GetCurrTime();
 
 /**
  * @brief

@@ -8,6 +8,7 @@ CPPFLAGS := -g -std=c++20 -Wall -Werror -Wextra
 GCO := -fprofile-arcs -ftest-coverage -O0
 
 # Directories and files
+DIR_BACK_TETRIS := brick_game/tetris
 BUILD_DIR := ../build
 IMAGE_DIR := images
 SRC_DIR := .
@@ -19,6 +20,8 @@ RM_RULE := rm -rf test *.dSYM coverage report res *.info *.gcda *.gcno snake_gam
 find_files = $(foreach ext,$(EXTENSIONS),$(wildcard $(1)/*.$(ext))) $(foreach d,$(wildcard $(1)/*),$(call find_files,$(d)))
 SRC_FILES := $(call find_files,$(SRC_DIR))
 CC_FILES := $(filter-out ./gui/desktop/main.cc ./gui/desktop/SnakeView.cc, $(filter %.cc,$(SRC_FILES)))
+
+LIBRARY_BACK_TETRIS := $(patsubst %.c,%.o,$(wildcard $(DIR_BACK_TETRIS)/*.c))
 
 TEST_SOURCES := tests/snake_test.cc tests/tetris_test.cc \
 				brick_game/common/BaseModel.cc \
@@ -42,6 +45,9 @@ install: clean
 	cd $(BUILD_DIR) && cmake ../src && make
 
 uninstall: clean
+
+libbrick_game: $(LIBRARY_BACK_TETRIS)
+	ar rcs static_L/tetris_back.a $^
 
 run_desktop:
 	$(BUILD_DIR)/desktopBrickGame
