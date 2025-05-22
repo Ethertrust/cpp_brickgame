@@ -13,6 +13,7 @@ BUILD_DIR := ../build
 IMAGE_DIR := images
 SRC_DIR := .
 EXTENSIONS := cc cpp h
+DIR_LIBRARY_TETRIS := static_L
 
 RM_RULE := rm -rf test *.dSYM coverage report res *.info *.gcda *.gcno snake_game ../build ../BrickGame_v2-0.tar.gz SnakeScore.txt TetrisScore.txt
 
@@ -39,7 +40,7 @@ GCOV_SOURCES := brick_game/common/BaseModel.cc \
 
 all: install test
 
-install: clean
+install: libbrick_game
 	mkdir -p $(BUILD_DIR)
 	cp -rf $(IMAGE_DIR) $(BUILD_DIR)
 	cd $(BUILD_DIR) && cmake ../src && make
@@ -47,7 +48,8 @@ install: clean
 uninstall: clean
 
 libbrick_game: $(LIBRARY_BACK_TETRIS)
-	ar rcs static_L/tetris_back.a $^
+	ar rcs $(DIR_LIBRARY_TETRIS)/tetris_back.a $^
+	-rm $(DIR_BACK_TETRIS)/*.o
 
 run_desktop:
 	$(BUILD_DIR)/desktopBrickGame

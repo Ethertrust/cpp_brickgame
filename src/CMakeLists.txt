@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.23)
-project(CPP3_BrickGame_v2_0_1 LANGUAGES CXX)
+project(CPP3_BrickGame_v2_0_1 LANGUAGES C CXX)
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -33,34 +36,35 @@ include_directories(
 )
 
 # Общие исходные файлы
+set(BRICK_GAME_LIB ${CMAKE_CURRENT_SOURCE_DIR}/static_L/tetris_back.a)
 set(COMMON_SOURCES
     brick_game/snake/SnakeModel.cc
     brick_game/snake/SnakeModel.h
-    brick_game/tetris/TetrisModel.cc
-    brick_game/tetris/TetrisModel.h
-    brick_game/tetris/Tetromino.h
-    brick_game/tetris/Tetromino.cc
+    # brick_game/tetris/TetrisModel.cc
+    # brick_game/tetris/TetrisModel.h
+    # brick_game/tetris/Tetromino.h
+    # brick_game/tetris/Tetromino.cc
     brick_game/common/Constants.h
     brick_game/common/BaseModel.h
     brick_game/common/BaseModel.cc
 )
 
-# Консольное приложение
-add_executable(consoleBrickGame
-    ${COMMON_SOURCES}
-    controller/SnakeController.h
-    controller/TetrisController.h
-    gui/console/snake/SnakeConsoleView.cc
-    gui/console/snake/SnakeConsoleView.h
-    gui/console/common/BrickGameConsoleView.cc
-    gui/console/common/BrickGameConsoleView.h
-    gui/console/BrickGameConsole.cc
-    gui/console/common/BaseView.cc
-    gui/console/common/BaseView.h
-    gui/console/tetris/TetrisConsoleView.cc
-)
+# # Консольное приложение
+# add_executable(consoleBrickGame
+#     ${COMMON_SOURCES}
+#     controller/SnakeController.h
+#     controller/TetrisController.h
+#     gui/console/snake/SnakeConsoleView.cc
+#     gui/console/snake/SnakeConsoleView.h
+#     gui/console/common/BrickGameConsoleView.cc
+#     gui/console/common/BrickGameConsoleView.h
+#     gui/console/BrickGameConsole.cc
+#     gui/console/common/BaseView.cc
+#     gui/console/common/BaseView.h
+#     gui/console/tetris/TetrisConsoleView.cc
+# )
 
-target_link_libraries(consoleBrickGame PRIVATE ncurses)
+# target_link_libraries(consoleBrickGame PRIVATE ncurses)
 
 # Десктопное приложение
 add_executable(desktopBrickGame
@@ -72,4 +76,8 @@ add_executable(desktopBrickGame
     gui/desktop/snake/View.h
 )
 
-target_link_libraries(desktopBrickGame PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(desktopBrickGame PRIVATE ${BRICK_GAME_LIB} Qt6::Core Qt6::Gui Qt6::Widgets)
+
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_executable(desktopBrickGame)
+endif()

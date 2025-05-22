@@ -81,11 +81,11 @@ void View::paintEvent(QPaintEvent *event) {
       GameOver(s_data_->is_victory, s_data_->best_score, s_data_->curr_score);
     }
   } else if (current_game_ == CurrentGame::kTetris) {
-    if (t_data_->t_game_status != GameState::kGameOver &&
-        t_data_->t_game_status != GameState::kGameOver) {
-      if (t_data_->t_game_status == GameState::kStart) {
+    if (t_data_->t_game_status != kGameOver &&
+        t_data_->t_game_status != kGameOver) {
+      if (t_data_->t_game_status == kStart) {
         StartWindowRendering(ui_->TetrisInfoLabel);
-      } else if (t_data_->t_game_status == GameState::kPause) {
+      } else if (t_data_->t_game_status == kPause) {
         PauseWindowRendering(ui_->TetrisInfoLabel);
       } else {
         ui_->TetrisInfoLabel->setText("");
@@ -93,7 +93,7 @@ void View::paintEvent(QPaintEvent *event) {
       }
     } else {
       ClearField();
-      GameOver(false, t_data_->t_best_score, t_data_->t_score);
+      GameOver(false, t_data_->model->info->high_score, t_data_->model->info->score);
     }
   }
 }
@@ -178,14 +178,14 @@ void View::UpdateSnakeModel() {
 }
 
 void View::UpdateTetrisModel() {
-  tetris_controller_->UpdateModelData(action_);
+  tetris_controller_->UpdateModelData(static_cast<int>(action_));
   t_data_ = &tetris_controller_->GetModelData();
-  action_ = UserAction::kNoSig;
-  ui_->tetris_curr_score->setText(QString::number(t_data_->t_score));
-  ui_->tetris_curr_level->setText(QString::number(t_data_->t_level));
-  ui_->tetris_best_score->setText(QString::number(t_data_->t_best_score));
-  if (t_data_->t_game_status == GameState::kGameOver ||
-      t_data_->t_game_status == GameState::kGameOver) {
+  action_ = static_cast<UserAction>(static_cast<int>(kNoSig));
+  ui_->tetris_curr_score->setText(QString::number(t_data_->model->info->score));
+  ui_->tetris_curr_level->setText(QString::number(t_data_->model->info->level));
+  ui_->tetris_best_score->setText(QString::number(t_data_->model->info->high_score));
+  if (t_data_->t_game_status == kGameOver ||
+      t_data_->t_game_status == kGameOver) {
     m_timer_->stop();
   }
 }
@@ -231,42 +231,41 @@ void View::SnakeGameRendering() {
 void View::TetrisGameRendering() {
   QPainter qp(this);
 
-  qp.setBrush(QColor(90, 90, 90));
+  // qp.setBrush(QColor(90, 90, 90));
   qp.setPen(QColor(0, 0, 0));
 
-  // current tetromino projection
-  qp.setBrush(kColors[0]);
-  for (const auto &item : t_data_->t_projection.GetCoords()) {
-    qp.drawRect((item.x) * GameSizes::kDotSize,
-                (item.y - 1) * GameSizes::kDotSize, GameSizes::kDotSize - 1,
-                GameSizes::kDotSize - 1);
-  }
+  // // current tetromino projection
+  // qp.setBrush(kColors[0]);
+  // for (const auto &item : t_data_->t_projection.GetCoords()) {
+  //   qp.drawRect((item.x) * GameSizes::kDotSize,
+  //               (item.y - 1) * GameSizes::kDotSize, GameSizes::kDotSize - 1,
+  //               GameSizes::kDotSize - 1);
+  // }
 
-  qp.setBrush(QColor(148, 195, 76));
-  // current tetromino
-  for (const auto &item : t_data_->t_curr.GetCoords()) {
-    qp.setBrush(kColors[static_cast<int>(t_data_->t_curr.GetShape())]);
-    qp.drawRect(item.x * GameSizes::kDotSize,
-                (item.y - 1) * GameSizes::kDotSize, GameSizes::kDotSize - 1,
-                GameSizes::kDotSize - 1);
-  }
+  // qp.setBrush(QColor(148, 195, 76));
+  // // current tetromino
+  // for (const auto &item : t_data_->t_curr.GetCoords()) {
+  //   qp.setBrush(kColors[static_cast<int>(t_data_->model->block)]);
+  //   qp.drawRect(item.x * tDotSize,
+  //               (item.y - 1) * tDotSize, tDotSize - 1,
+  //               tDotSize - 1);
+  // }
 
   // next tetromino
-  for (const auto &item : t_data_->t_next.GetCoords()) {
-    qp.setBrush(kColors[static_cast<int>(t_data_->t_next.GetShape())]);
-    qp.drawRect((item.x + 8) * GameSizes::kDotSize,
-                (item.y + 2) * GameSizes::kDotSize, GameSizes::kDotSize - 1,
-                GameSizes::kDotSize - 1);
+  for (const auto &item : tetris_controller_->CastCoords()) {
+    qp.setBrush(kColors[static_cast<int>(t_data_->model->next_block)]);
+    qp.drawRect((item.x + 8) * tDotSize,
+                (item.y + 2) * tDotSize, tDotSize - 1,
+                tDotSize - 1);
   }
 
   // board
-  for (int i = 0; i < GameSizes::kFieldHeight; ++i) {
-    for (int j = 0; j < GameSizes::kFieldWidth; ++j) {
-      if (t_data_->t_field_[i][j].first) {
-        qp.setBrush(kColors[static_cast<int>(t_data_->t_field_[i][j].second)]);
-        qp.drawRect(j * GameSizes::kDotSize, i * GameSizes::kDotSize,
-                    GameSizes::kDotSize - 1, GameSizes::kDotSize - 1);
-      }
+  for (int i = 0; i < tFieldHeight; ++i) {
+    for (int j = 0; j < tFieldWidth; ++j) {
+      if (t_data_->model->info->field[i][j]==0) qp.setBrush(kColors[7]); //static_cast<int>(t_data_->model->field[i][j])
+      else if (t_data_->model->info->field[i][j]==1) qp.setBrush(kColors[8]); //static_cast<int>(t_data_->model->field[i][j])
+      else if (t_data_->model->info->field[i][j]==2) qp.setBrush(kColors[static_cast<int>(t_data_->model->block)]);//static_cast<int>(t_data_->model->field[i][j])
+      qp.drawRect(j * tDotSize, i * tDotSize, tDotSize - 1, tDotSize - 1);
     }
   }
   qp.end();
@@ -283,3 +282,4 @@ void View::PauseWindowRendering(QLabel *p_label) {
 }
 
 }  // namespace s21
+

@@ -1,12 +1,12 @@
 // Copyright 2025 shericen
 #include <gtest/gtest.h>
 
-#include "../brick_game/tetris/TetrisModel.h"
+#include "../static_L/tetris_back.h"
 
 class TetrisGameTest : public ::testing::Test {
  protected:
-  s21::TetrisModel tetris_model_;
-  s21::TetrisGameData *tetris_game_data_;
+  TetrisModel tetris_model_;
+  TetrisGameData *tetris_game_data_;
 };
 
 TEST_F(TetrisGameTest, MoveLeft) {
