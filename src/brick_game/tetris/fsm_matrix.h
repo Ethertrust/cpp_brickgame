@@ -1,13 +1,24 @@
 #ifndef FSM_MATRIX
 #define FSM_MATRIX
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "tetris_back.h"
+
+#define tDotSize 30
+#define tFieldWidth 10
+#define tFieldHeight 20
+#define tSidePanelHeight 5
+#define tWindowWidth 22
+#define tWindowHeight 21
 
 /**
  * @brief Enum with possible game states
  *
  */
-typedef enum { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver } GameState;
+typedef enum GameState { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver } GameState;
 
 /**
  * @brief Enum with possible user Action
@@ -31,9 +42,11 @@ typedef enum {
  * @param GameState current active state
  */
 typedef struct {
-  Model* model;
   GameState t_game_status;
+  Model* model;
 } TetrisModel;
+
+void init_tetris_model(TetrisModel **state);
 
 // UserAction player_input(int input);
 // void game_pause();
@@ -57,7 +70,7 @@ void StartGame(TetrisModel* state);
  */
 void SpawnNewTetromino(TetrisModel* state);
 
-typedef void (*Action)();
+typedef void (*Action)(TetrisModel*);
 
 const Action kTetrisActionTable[6][9] = {
     // kStart
@@ -77,4 +90,7 @@ const Action kTetrisActionTable[6][9] = {
     {ExitGame, ExitGame, ExitGame, ExitGame, ExitGame, ExitGame, ExitGame,
      ExitGame, ExitGame}};
 
+#ifdef __cplusplus
+}
+#endif
 #endif

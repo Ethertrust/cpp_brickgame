@@ -179,6 +179,7 @@ void View::UpdateSnakeModel() {
 
 void View::UpdateTetrisModel() {
   tetris_controller_->UpdateModelData(static_cast<int>(action_));
+  std::cout << 1;
   t_data_ = &tetris_controller_->GetModelData();
   action_ = static_cast<UserAction>(static_cast<int>(kNoSig));
   ui_->tetris_curr_score->setText(QString::number(t_data_->model->info->score));

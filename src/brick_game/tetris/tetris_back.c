@@ -77,33 +77,64 @@ void spawn_block(Model* state, int spawn_pos_x) {
 }
 
 void init_tetris_map(Model **state) {
-  (*state)->last_moving_time_ = GetCurrTime();
-  (*state)->curr_delay_ = kIntervalMs[0];
-  (*state)->info = (GameInfo_t *)s21_malloc(
-      1 * sizeof(GameInfo_t));  //(GameInfo_t *)calloc(1, sizeof(GameInfo_t));
-  (*state)->info->level = 1;
-  (*state)->info->speed = 2000000;
-
-  FILE *fp = fopen(FILE_SCORE, "r");
-  if (!fp) {
-    (*state)->info->high_score = 0;
-  } else {
-    fscanf(fp, "%d", &(*state)->info->high_score);
-    fclose(fp);
+  FILE *file = fopen("./tests/output.txt", "w");
+  if (file == NULL) {
+      perror("Ошибка открытия файла");
   }
+  fprintf(file, "\n00\n");
+  fclose(file);
 
-  (*state)->info->pause = 0;
-  (*state)->info->score = 0;
-  (*state)->info->field = (int **)s21_malloc(
-      WINDOW_HEIGHT *
-      sizeof(int *));  // (int **)calloc(WINDOW_HEIGHT, sizeof(int *));
-  for (int i = 0; i < WINDOW_HEIGHT; ++i)
-    (*state)->info->field[i] = (int *)s21_malloc(
+  (*state) = (Model*)calloc(1, sizeof(Model));
+  // fprintf(stdout,"\n0");
+  // (*state)->t_game_status = kStart;
+  (*state)->last_moving_time_ = GetCurrTime();
+  file = fopen("./tests/output.txt", "w");
+  if (file == NULL) {
+      perror("Ошибка открытия файла");
+  }
+  
+  fprintf(file, "\n1\n");
+  fclose(file);
+    (*state)->curr_delay_ = kIntervalMs[0];
+  file = fopen("./tests/output.txt", "w");
+  if (file == NULL) {
+      perror("Ошибка открытия файла");
+  }
+  
+  fprintf(file, "\n2\n");
+  fclose(file);
+    (*state)->info = (GameInfo_t *)s21_malloc(
+        1 * sizeof(GameInfo_t));  //(GameInfo_t *)calloc(1, sizeof(GameInfo_t));
+  file = fopen("./tests/output.txt", "w");
+  if (file == NULL) {
+      perror("Ошибка открытия файла");
+  }
+  
+  fprintf(file, "\n3\n");
+  fclose(file);
+    (*state)->info->level = 1;
+    (*state)->info->speed = 2000000;
+    fprintf(stdout,"\n1");
+    FILE *fp = fopen(FILE_SCORE, "r");
+    if (!fp) {
+      (*state)->info->high_score = 0;
+    } else {
+      fscanf(fp, "%d", &(*state)->info->high_score);
+      fclose(fp);
+    }
+  
+    (*state)->info->pause = 0;
+    (*state)->info->score = 0;
+    (*state)->info->field = (int **)s21_malloc(
         WINDOW_HEIGHT *
-        sizeof(int));  //(int *)calloc(WINDOW_WIDTH, sizeof(int));
-  (*state)->info->next = NULL;
-  get_set_current_map(*state);
-}
+        sizeof(int *));  // (int **)calloc(WINDOW_HEIGHT, sizeof(int *));
+    for (int i = 0; i < WINDOW_HEIGHT; ++i)
+      (*state)->info->field[i] = (int *)s21_malloc(
+          WINDOW_HEIGHT *
+          sizeof(int));  //(int *)calloc(WINDOW_WIDTH, sizeof(int));
+    (*state)->info->next = NULL;
+    get_set_current_map(*state);
+  }
 
 void clear_tetris(Model *state) {
   for (int i = 0; i < WINDOW_HEIGHT; ++i) {
@@ -113,6 +144,7 @@ void clear_tetris(Model *state) {
   free(state->info->field);
   state->info->field = NULL;
   free(state->info);
+  free(state);
 }
 
 void try_left(Model *state) {
@@ -356,7 +388,7 @@ Model *get_set_current_map(Model *state) {
 }
 
 void *s21_malloc(const size_t size) {
-  void *malloc_ptr = malloc(size);
+  void *malloc_ptr = calloc(1, size);
   if (malloc_ptr == NULL) {
     fprintf(stderr, "%zu[DEBUG] Bad memory allocation\n", size);
     exit(BAD_ALLOC);

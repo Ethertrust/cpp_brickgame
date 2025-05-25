@@ -42,6 +42,11 @@
 //   while (c != 'p' && c != 's' && c != 'q') c = getch();
 // }
 
+void init_tetris_model(TetrisModel **state) {
+  (*state) = (TetrisModel*)calloc(1, sizeof(TetrisModel));
+  init_tetris_map(&((*state)->model));
+}
+
 void SpawnNewTetromino(TetrisModel *state) {
   switch (state->model->block) {
     case L_block:
@@ -68,6 +73,8 @@ void SpawnNewTetromino(TetrisModel *state) {
     default:
       break;
   }
+  state->t_game_status = kMoving; 
+  fprintf(stdout, "\n3.5\n");
 }
 
 void MoveTetrominoLeft(TetrisModel *state){ try_left(state->model); }
@@ -76,13 +83,13 @@ void MoveTetrominoDown(TetrisModel *state){ try_down(state->model); }
 void DropTetromino(TetrisModel *state){ while(!(try_down(state->model))); }
 void RotateTetromino(TetrisModel *state){ rotate_block(state->model); }
 
-void SetPause(TetrisModel *state) { state->t_game_status = kPause; }
+void SetPause(TetrisModel *state) { state->t_game_status = kPause; fprintf(stdout, "\n5\n");  }
 
-void CancelPause(TetrisModel *state) { state->t_game_status = kMoving; }
+void CancelPause(TetrisModel *state) { state->t_game_status = kMoving; fprintf(stdout, "\n4\n");  }
 
-void ExitGame(TetrisModel *state) { state->t_game_status = kGameOver; }
+void ExitGame(TetrisModel *state) { state->t_game_status = kGameOver; fprintf(stdout, "\n6\n");  }
 
-void StartGame(TetrisModel *state) { state->t_game_status = kSpawn; }
+void StartGame(TetrisModel *state) { state->t_game_status = kSpawn; fprintf(stdout, "\n3\n"); }
 
 void TetrisUpdateModelData(TetrisModel* state, UserAction act) {
   uint64_t curr_time = state->model->last_moving_time_;

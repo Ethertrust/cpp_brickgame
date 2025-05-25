@@ -112,9 +112,17 @@ typedef struct {
  * @param GameState current active state
  */
 typedef struct {
-  Model* model;
   GameState t_game_status;
+  Model* model;
 } TetrisModel;
+
+void init_tetris_model(TetrisModel **state);
+
+/**
+ * @brief delete all dynamic objects
+ * @param state current game state
+ */
+void clear_tetris(Model* state);
 
 static const int block_state[7][4][16] = {
   /*L_block*/ {{0, 0, 2, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -152,7 +160,7 @@ static const int block_state[7][4][16] = {
    {0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
    {2, 0, 0, 0, 2, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0}}};
 
-void init_tetris_map(Model** state);
+void init_tetris_map(TetrisModel** state);
 void TetrisUpdateModelData(TetrisModel* state, UserAction act);
 int c_library_calculate(float value);
 

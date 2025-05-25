@@ -116,18 +116,6 @@ uint64_t GetCurrTime();
  */
 GameInfo_t updateCurrentState();
 
-/**
- * @brief
- *
- * @return initialisation tetris map
- */
-void init_tetris_map(Model** state);
-
-int get_active_position(Rectangle_t* rect, bool rotate);
-int get_max_active_x();
-int get_min_active_x();
-int get_max_active_y();
-int get_min_active_y();
 
 /**
  * @brief moves active piece in left if is no obstacle
@@ -221,6 +209,13 @@ void choose_blstate(int** buf, block_type bt, position pos, int spawn_pos_x);
  * @param spawn_pos_x x coordinate for spawn position
  */
 void spawn_block(Model* state, int spawn_pos_x);
+
+/**
+ * @brief
+ *
+ * @return initialisation tetris map
+ */
+void init_tetris_map(Model** state);
 
 /**
  * @brief safe memory allocation

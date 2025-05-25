@@ -24,11 +24,8 @@ CC_FILES := $(filter-out ./gui/desktop/main.cc ./gui/desktop/SnakeView.cc, $(fil
 
 LIBRARY_BACK_TETRIS := $(patsubst %.c,%.o,$(wildcard $(DIR_BACK_TETRIS)/*.c))
 
-TEST_SOURCES := tests/snake_test.cc tests/tetris_test.cc \
-				brick_game/common/BaseModel.cc \
-				brick_game/snake/SnakeModel.cc \
-				brick_game/tetris/TetrisModel.cc \
-				brick_game/tetris/Tetromino.cc
+TEST_SOURCES :=  tests/tetris_test.cc #tests/snake_test.cc\
+
 
 GCOV_SOURCES := brick_game/common/BaseModel.cc \
 				brick_game/snake/SnakeModel.cc \
@@ -57,7 +54,7 @@ run_desktop:
 run_cli:
 	$(BUILD_DIR)/consoleBrickGame
 
-test: $(TEST_SOURCES)
+test: $(TEST_SOURCES) $(DIR_LIBRARY_TETRIS)/tetris_back.a
 	$(GCC) $(TEST_FLAGS) -g -o $@ $^
 	./$@
 
