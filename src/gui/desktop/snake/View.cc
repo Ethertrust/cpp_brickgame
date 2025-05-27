@@ -253,13 +253,14 @@ void View::TetrisGameRendering() {
   // }
 
   // next tetromino
-  for (const auto &item : tetris_controller_->CastCoords()) {
+  std::cout << 0.5 ;
+  for (const auto &item : tetris_controller_->GetCoords()) {
     qp.setBrush(kColors[static_cast<int>(t_data_->model->next_block)]);
     qp.drawRect((item.x + 8) * tDotSize,
                 (item.y + 2) * tDotSize, tDotSize - 1,
                 tDotSize - 1);
   }
-
+  std::cout << 0.6 ;
   // board
   for (int i = 0; i < tFieldHeight; ++i) {
     for (int j = 0; j < tFieldWidth; ++j) {
@@ -269,6 +270,7 @@ void View::TetrisGameRendering() {
       qp.drawRect(j * tDotSize, i * tDotSize, tDotSize - 1, tDotSize - 1);
     }
   }
+  std::cout << 0.7 ;
   qp.end();
 }
 

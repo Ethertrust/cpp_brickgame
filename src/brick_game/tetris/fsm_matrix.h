@@ -7,13 +7,6 @@ extern "C" {
 
 #include "tetris_back.h"
 
-#define tDotSize 30
-#define tFieldWidth 10
-#define tFieldHeight 20
-#define tSidePanelHeight 5
-#define tWindowWidth 22
-#define tWindowHeight 21
-
 /**
  * @brief Enum with possible game states
  *

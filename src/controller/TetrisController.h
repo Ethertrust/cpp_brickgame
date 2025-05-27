@@ -15,7 +15,7 @@ class TetrisController {
   free(model_);};
 
   void UpdateModelData(int act = 0) {
-
+    std::cout << "state -> "<<model_->t_game_status << "act -> "<<act;
     TetrisUpdateModelData(model_, static_cast<UserAction>(act));
     std::cout << 2;
   }
@@ -23,21 +23,31 @@ class TetrisController {
   void SetModelDataDefault() { init_tetris_model(&model_); }
   
   TetrisModel &GetModelData() { return *model_; }
-  std::vector<s21::Coordinates> CastCoords() { 
+  std::vector<s21::Coordinates> GetCoords() { 
     t_coords_.resize(4);
-    int j = 0;
-    for(int i = 0; i<4; ) { 
-      if(block_state[model_->model->next_block][0][j]!=0){
-        t_coords_[i].x = j%4 + tFieldWidth / 2 -1; 
-        t_coords_[i].y = j/4; 
-        ++i;
-      }
-      while(block_state[model_->model->next_block][0][++j]==0);
-      t_coords_[i].x = j%4 + tFieldWidth / 2 -1; 
-      t_coords_[i].y = j/4; 
-      ++i;
-      ++j;
+    // Создаём временные C-массивы
+    std::vector<int * > first_elements;
+    std::vector<int * > second_elements;
+
+    for (auto& p : t_coords_) {
+        first_elements.push_back(&p.x);
+        second_elements.push_back(&p.y);
     }
+    std::cout << "violation";
+    CastCoords(first_elements.data(), second_elements.data(), model_->model);
+    // int j = 0;
+    // for(int i = 0; i<4; ) { 
+
+    //     t_coords_[i].x = j%4 + tFieldWidth / 2 -1; 
+    //     t_coords_[i].y = j/4; 
+    //     ++i;
+    //   }
+    //   while(block_state[model_->model->next_block][0][++j]==0);
+    //   t_coords_[i].x = j%4 + tFieldWidth / 2 -1; 
+    //   t_coords_[i].y = j/4; 
+    //   ++i;
+    //   ++j;
+    // }
     return t_coords_; 
   }
 

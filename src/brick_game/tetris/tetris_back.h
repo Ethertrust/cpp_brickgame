@@ -11,14 +11,22 @@
 
 #ifndef TETRIS_V2
 #define TETRIS_V2
+//cli
 #define WINDOW_WIDTH 10
-#define WINDOW_HEIGHT 21
+#define WINDOW_HEIGHT 20
 #define SPAWN_POS_X 3
 #define SPAWN_POS_Y 0
 #define FILE_SCORE "./game_info/highscore_list.txt"
 #define BAD_ALLOC 1
 #define INTERVALS \
   { 500, 420, 340, 260, 230, 200, 180, 160, 140, 125 }
+//window
+#define tDotSize 30
+#define tFieldWidth 10
+#define tFieldHeight 20
+#define tSidePanelHeight 5
+#define tWindowWidth 22
+#define tWindowHeight 21
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -238,6 +246,8 @@ int** s21_malloc_matrix(const size_t y, const size_t x);
  * @param r_size number of rows
  */
 void free_matrix(int** matrix, int r_size);
+
+void CastCoords(int **x, int **y, Model *model);
 
 static const uint64_t kIntervalMs[10] = INTERVALS;
 

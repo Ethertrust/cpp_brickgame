@@ -43,11 +43,12 @@
 // }
 
 void init_tetris_model(TetrisModel **state) {
-  (*state) = (TetrisModel*)calloc(1, sizeof(TetrisModel));
+  (*state) = (TetrisModel*)s21_malloc(1 * sizeof(TetrisModel));
   init_tetris_map(&((*state)->model));
 }
 
 void SpawnNewTetromino(TetrisModel *state) {
+  fprintf(stdout, "\n3.4\n");
   switch (state->model->block) {
     case L_block:
       spawn_block(state->model, SPAWN_POS_X);
@@ -107,10 +108,14 @@ void TetrisUpdateModelData(TetrisModel* state, UserAction act) {
     if (curr_time - state->model->last_moving_time_ > state->model->curr_delay_) {
       state->model->last_moving_time_ = curr_time;
       game_process(state);
+      fprintf(stdout, "\n3.7\n");
       MoveTetrominoDown(state);
+      fprintf(stdout, "\n3.8\n");
     }
     UpdateLevel(state->model);
+    fprintf(stdout, "\n3.9\n");
   }
+  fprintf(stdout, "\n3.99\n");
 }
 
 // void game_loop_2() {
@@ -172,8 +177,10 @@ bool game_process(TetrisModel *state) {
       result = false;
     } else {
       state->model->block = state->model->next_block;
-      SpawnNewTetromino(state);
+      // SpawnNewTetromino(state);
       state->model->next_block = get_random_block();
+      state->t_game_status = kSpawn;
+      fprintf(stdout, "\n3.6\n");
     }
   }
   return result;

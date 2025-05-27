@@ -77,44 +77,44 @@ void spawn_block(Model* state, int spawn_pos_x) {
 }
 
 void init_tetris_map(Model **state) {
-  FILE *file = fopen("./tests/output.txt", "w");
-  if (file == NULL) {
-      perror("Ошибка открытия файла");
-  }
-  fprintf(file, "\n00\n");
-  fclose(file);
+  // FILE *file = fopen("./tests/output.txt", "w");
+  // if (file == NULL) {
+  //     perror("Ошибка открытия файла");
+  // }
+  // fprintf(file, "\n00\n");
+  // fclose(file);
 
-  (*state) = (Model*)calloc(1, sizeof(Model));
+  (*state) = (Model*)s21_malloc(1 * sizeof(Model));
   // fprintf(stdout,"\n0");
   // (*state)->t_game_status = kStart;
   (*state)->last_moving_time_ = GetCurrTime();
-  file = fopen("./tests/output.txt", "w");
-  if (file == NULL) {
-      perror("Ошибка открытия файла");
-  }
+  // file = fopen("./tests/output.txt", "w");
+  // if (file == NULL) {
+  //     perror("Ошибка открытия файла");
+  // }
   
-  fprintf(file, "\n1\n");
-  fclose(file);
+  // fprintf(file, "\n1\n");
+  // fclose(file);
     (*state)->curr_delay_ = kIntervalMs[0];
-  file = fopen("./tests/output.txt", "w");
-  if (file == NULL) {
-      perror("Ошибка открытия файла");
-  }
+  // file = fopen("./tests/output.txt", "w");
+  // if (file == NULL) {
+  //     perror("Ошибка открытия файла");
+  // }
   
-  fprintf(file, "\n2\n");
-  fclose(file);
+  // fprintf(file, "\n2\n");
+  // fclose(file);
     (*state)->info = (GameInfo_t *)s21_malloc(
         1 * sizeof(GameInfo_t));  //(GameInfo_t *)calloc(1, sizeof(GameInfo_t));
-  file = fopen("./tests/output.txt", "w");
-  if (file == NULL) {
-      perror("Ошибка открытия файла");
-  }
+  // file = fopen("./tests/output.txt", "w");
+  // if (file == NULL) {
+  //     perror("Ошибка открытия файла");
+  // }
   
-  fprintf(file, "\n3\n");
-  fclose(file);
+  // fprintf(file, "\n3\n");
+  // fclose(file);
     (*state)->info->level = 1;
     (*state)->info->speed = 2000000;
-    fprintf(stdout,"\n1");
+    // fprintf(stdout,"\n1");
     FILE *fp = fopen(FILE_SCORE, "r");
     if (!fp) {
       (*state)->info->high_score = 0;
@@ -385,6 +385,22 @@ Model *get_set_current_map(Model *state) {
     state_ = state;
   }
   return state_;
+}
+
+void CastCoords(int  **x, int  **y, Model *model){
+  int j = 0;
+  for(int i = 0; i<4; ) { 
+    if(block_state[model->next_block][0][j]!=0){
+      *(x[i]) = j%4 + tFieldWidth / 2 -1; 
+      *(y[i]) = j/4; 
+      ++i;
+    }
+    while(block_state[model->next_block][0][++j]==0);
+    *(x[i]) = j%4 + tFieldWidth / 2 -1; 
+    *(y[i]) = j/4; 
+    ++i;
+    ++j;
+  }
 }
 
 void *s21_malloc(const size_t size) {
