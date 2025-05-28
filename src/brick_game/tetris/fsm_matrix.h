@@ -1,9 +1,7 @@
 #ifndef FSM_MATRIX
 #define FSM_MATRIX
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 
 #include "tetris_back.h"
 
@@ -83,7 +81,5 @@ const Action kTetrisActionTable[6][9] = {
     {ExitGame, ExitGame, ExitGame, ExitGame, ExitGame, ExitGame, ExitGame,
      ExitGame, ExitGame}};
 
-#ifdef __cplusplus
-}
-#endif
+
 #endif
