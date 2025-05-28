@@ -8,6 +8,7 @@ CPPFLAGS := -g -std=c++20 -Wall -Werror -Wextra
 GCO := -fprofile-arcs -ftest-coverage -O0
 
 # Directories and files
+DIR_GAME_INFO := game_info
 DIR_BACK_TETRIS := brick_game/tetris
 BUILD_DIR := ../build
 IMAGE_DIR := images
@@ -38,6 +39,7 @@ GCOV_SOURCES := brick_game/common/BaseModel.cc \
 all: install test
 
 install: libbrick_game
+	mkdir -p $(DIR_GAME_INFO)
 	mkdir -p $(BUILD_DIR)
 	cp -rf $(IMAGE_DIR) $(BUILD_DIR)
 	cd $(BUILD_DIR) && cmake ../src && make

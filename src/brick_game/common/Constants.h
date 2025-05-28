@@ -33,16 +33,6 @@ enum class UserAction {
   kTabBtn     // 8
 };
 
-struct Coordinates {
-  Coordinates() : x(0), y(0) {}
-  Coordinates(int x_, int y_) : x(x_), y(y_) {}
-  bool operator==(const Coordinates &other) const {
-    return (x == other.x && y == other.y);
-  }
-  int x;
-  int y;
-};
-
 }  // namespace s21
 
 #endif  // BRICK_GAME_COMMON_CONSTANTS_H_

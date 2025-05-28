@@ -67,7 +67,7 @@ void View::paintEvent(QPaintEvent *event) {
   QWidget::paintEvent(event);
   if (current_game_ == CurrentGame::kSnake) {
     if (s_data_->game_status != GameState::kGameOver &&
-        s_data_->game_status != GameState::kGameOver) {
+        s_data_->game_status != GameState::kCollide) {
       if (s_data_->game_status == GameState::kStart) {
         StartWindowRendering(ui_->SnakeInfoLabel);
       } else if (s_data_->game_status == GameState::kPause) {
@@ -82,7 +82,7 @@ void View::paintEvent(QPaintEvent *event) {
     }
   } else if (current_game_ == CurrentGame::kTetris) {
     if (t_data_->t_game_status != kGameOver &&
-        t_data_->t_game_status != kGameOver) {
+        t_data_->t_game_status != kCollide) {
       if (t_data_->t_game_status == kStart) {
         StartWindowRendering(ui_->TetrisInfoLabel);
       } else if (t_data_->t_game_status == kPause) {
@@ -179,7 +179,7 @@ void View::UpdateSnakeModel() {
 
 void View::UpdateTetrisModel() {
   tetris_controller_->UpdateModelData(static_cast<int>(action_));
-  std::cout << 1;
+  // std::cout << 1;
   t_data_ = &tetris_controller_->GetModelData();
   action_ = static_cast<UserAction>(static_cast<int>(kNoSig));
   ui_->tetris_curr_score->setText(QString::number(t_data_->model->info->score));
@@ -253,24 +253,24 @@ void View::TetrisGameRendering() {
   // }
 
   // next tetromino
-  std::cout << 0.5 ;
+  // std::cout << 0.5 ;
   for (const auto &item : tetris_controller_->GetCoords()) {
     qp.setBrush(kColors[static_cast<int>(t_data_->model->next_block)]);
     qp.drawRect((item.x + 8) * tDotSize,
                 (item.y + 2) * tDotSize, tDotSize - 1,
                 tDotSize - 1);
   }
-  std::cout << 0.6 ;
+  // std::cout << 0.6 ;
   // board
-  for (int i = 0; i < tFieldHeight; ++i) {
+  for (int i = 1; i < tFieldHeight; ++i) {
     for (int j = 0; j < tFieldWidth; ++j) {
       if (t_data_->model->info->field[i][j]==0) qp.setBrush(kColors[7]); //static_cast<int>(t_data_->model->field[i][j])
       else if (t_data_->model->info->field[i][j]==1) qp.setBrush(kColors[8]); //static_cast<int>(t_data_->model->field[i][j])
       else if (t_data_->model->info->field[i][j]==2) qp.setBrush(kColors[static_cast<int>(t_data_->model->block)]);//static_cast<int>(t_data_->model->field[i][j])
-      qp.drawRect(j * tDotSize, i * tDotSize, tDotSize - 1, tDotSize - 1);
+      qp.drawRect(j * tDotSize, (i-1) * tDotSize, tDotSize - 1, tDotSize - 1);
     }
   }
-  std::cout << 0.7 ;
+  // std::cout << 0.7 ;
   qp.end();
 }
 

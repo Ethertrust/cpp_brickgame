@@ -13,27 +13,29 @@
 #define TETRIS_V2
 //cli
 #define WINDOW_WIDTH 10
-#define WINDOW_HEIGHT 20
+#define WINDOW_HEIGHT 21
 #define SPAWN_POS_X 3
 #define SPAWN_POS_Y 0
-#define FILE_SCORE "./game_info/highscore_list.txt"
+#define FILE_SCORE "./game_info/tetris_highscore_list.txt"
+#define GAME_INFO_DIR "game_info"
 #define BAD_ALLOC 1
 #define INTERVALS \
   { 500, 420, 340, 260, 230, 200, 180, 160, 140, 125 }
 //window
 #define tDotSize 30
 #define tFieldWidth 10
-#define tFieldHeight 20
+#define tFieldHeight 21
 #define tSidePanelHeight 5
 #define tWindowWidth 22
-#define tWindowHeight 21
+#define tWindowHeight 22
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-
+#include <sys/stat.h> 
+#include <errno.h>
 /**
  * @brief enum with all block types of tetris
  *
@@ -55,6 +57,32 @@ typedef enum block_type {
 typedef enum cell_state { empty, block, active_block } cell_state;
 
 typedef enum position { top, left, bottom, right } position;
+
+#ifdef __cplusplus
+// C++-часть с конструкторами и операторами
+struct TCoordinates {
+  TCoordinates() : x(0), y(0) {};
+  TCoordinates(int x_, int y_) : x(x_), y(y_) {};
+  bool operator==(const TCoordinates &other) const {
+    return (x == other.x && y == other.y);
+  };
+
+  int x;
+  int y;
+};
+
+extern "C" {
+#else
+// C-часть (только данные)
+typedef struct {
+  int x;
+  int y;
+} TCoordinates;
+#endif
+
+#ifdef __cplusplus
+}  // extern "C"
+#endif
 
 /**
  * @brief Struct with main game info
@@ -247,7 +275,7 @@ int** s21_malloc_matrix(const size_t y, const size_t x);
  */
 void free_matrix(int** matrix, int r_size);
 
-void CastCoords(int **x, int **y, Model *model);
+void CastCoords(TCoordinates* Coordinates, Model *model);
 
 static const uint64_t kIntervalMs[10] = INTERVALS;
 

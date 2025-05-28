@@ -88,7 +88,7 @@ void SetPause(TetrisModel *state) { state->t_game_status = kPause; fprintf(stdou
 
 void CancelPause(TetrisModel *state) { state->t_game_status = kMoving; fprintf(stdout, "\n4\n");  }
 
-void ExitGame(TetrisModel *state) { state->t_game_status = kGameOver; fprintf(stdout, "\n6\n");  }
+void ExitGame(TetrisModel *state) { state->t_game_status = kGameOver; if (state->model->info->high_score < state->model->info->score) set_new_highscore(state->model);  }
 
 void StartGame(TetrisModel *state) { state->t_game_status = kSpawn; fprintf(stdout, "\n3\n"); }
 
@@ -107,7 +107,12 @@ void TetrisUpdateModelData(TetrisModel* state, UserAction act) {
   if (state->t_game_status == kMoving) {
     if (curr_time - state->model->last_moving_time_ > state->model->curr_delay_) {
       state->model->last_moving_time_ = curr_time;
-      game_process(state);
+      if(!game_process(state)) {
+        fprintf(stdout, "\n3.65\n");
+        if (state->model->info->high_score < state->model->info->score) set_new_highscore(state->model);
+        fprintf(stdout, "\n3.67\n");
+        state->t_game_status = kGameOver;
+      }
       fprintf(stdout, "\n3.7\n");
       MoveTetrominoDown(state);
       fprintf(stdout, "\n3.8\n");
@@ -115,7 +120,7 @@ void TetrisUpdateModelData(TetrisModel* state, UserAction act) {
     UpdateLevel(state->model);
     fprintf(stdout, "\n3.9\n");
   }
-  fprintf(stdout, "\n3.99\n");
+  // fprintf(stdout, "\n3.99\n");
 }
 
 // void game_loop_2() {

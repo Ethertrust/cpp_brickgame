@@ -10,6 +10,7 @@
  */
 #include "tetris_back.h"
 
+
 // void userInput(UserAction action, bool hold) {
 //   if (hold) {
 //     Model *state = get_set_current_map(NULL);
@@ -63,7 +64,10 @@ void choose_blstate(int** buf, block_type bt, position pos, int spawn_pos_x) {
   int strnum = 2 + (pos % 2 * 2);
   for (int i = 0; i < strnum; ++i)
     for (int j = 0; j < 4; ++j)
-      buf[i][j + spawn_pos_x] = block_state[bt][pos][i * 4 + j];
+      if(bt == I_block) 
+        buf[i][j + spawn_pos_x] = block_state[bt][pos][i * 4 + j];
+      else
+        buf[i][j + spawn_pos_x] = block_state[bt][pos][i * 4 + j];
 }
 
 void spawn_block(Model* state, int spawn_pos_x) {
@@ -336,6 +340,23 @@ void active_to_block(Model *state) {
 }
 
 void set_new_highscore(Model *state) {
+  if (mkdir(GAME_INFO_DIR, 0777)){
+        printf("Папка '%s' создана.\n", GAME_INFO_DIR);
+    } else {
+        switch (errno) {
+            case EEXIST:
+                printf("Папка '%s' уже существует.\n", GAME_INFO_DIR);
+                break;
+            case ENOENT:
+                printf("Ошибка: неверный путь.\n");
+                break;
+            case EACCES:
+                printf("Нет прав на создание папки.\n");
+                break;
+            default:
+                perror("Ошибка mkdir");
+        }
+    }
   FILE *fp = fopen(FILE_SCORE, "wb");
   if (!fp) return;
   fprintf(fp, "%d", state->info->score);
@@ -387,17 +408,20 @@ Model *get_set_current_map(Model *state) {
   return state_;
 }
 
-void CastCoords(int  **x, int  **y, Model *model){
+void CastCoords(TCoordinates* Coordinates, Model *model){
   int j = 0;
+  // int** matrix = (int**)malloc(4 * sizeof(int*));
+  // for(int i = 0; i<4; ) matrix[i] = (int*)malloc(2 * sizeof(int));
   for(int i = 0; i<4; ) { 
+    
     if(block_state[model->next_block][0][j]!=0){
-      *(x[i]) = j%4 + tFieldWidth / 2 -1; 
-      *(y[i]) = j/4; 
+      Coordinates[i].x = j%4 + tFieldWidth / 2 -1; 
+      Coordinates[i].y = j/4; 
       ++i;
     }
     while(block_state[model->next_block][0][++j]==0);
-    *(x[i]) = j%4 + tFieldWidth / 2 -1; 
-    *(y[i]) = j/4; 
+    Coordinates[i].x = j%4 + tFieldWidth / 2 -1; 
+    Coordinates[i].y = j/4; 
     ++i;
     ++j;
   }

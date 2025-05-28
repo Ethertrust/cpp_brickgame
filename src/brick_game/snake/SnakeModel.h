@@ -9,6 +9,16 @@
 
 #include "../common/BaseModel.h"
 
+struct Coordinates {
+  Coordinates() : x(0), y(0) {}
+  Coordinates(int x_, int y_) : x(x_), y(y_) {}
+  bool operator==(const Coordinates &other) const {
+    return (x == other.x && y == other.y);
+  }
+  int x;
+  int y;
+};
+
 namespace s21 {
 
 enum class Direction { kUp, kDown, kRight, kLeft };

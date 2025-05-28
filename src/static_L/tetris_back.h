@@ -2,17 +2,15 @@
 #ifndef TETRIS_BACK_H
 #define TETRIS_BACK_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 
 #define tDotSize 30
 #define tFieldWidth 10
-#define tFieldHeight 20
+#define tFieldHeight 21
 #define tSidePanelHeight 5
 #define tWindowWidth 22
 #define tWindowHeight 21
-#include <stdint.h>
+// #include <stdint.h>
 
 /**
  * @brief Enum with possible game states
@@ -57,6 +55,32 @@ typedef enum block_type {
 typedef enum cell_state { empty, block, active_block } cell_state;
 
 typedef enum position { top, left, bottom, right } position;
+
+#ifdef __cplusplus
+// C++-часть с конструкторами и операторами
+struct TCoordinates {
+  TCoordinates() : x(0), y(0) {};
+  TCoordinates(int x_, int y_) : x(x_), y(y_) {};
+  bool operator==(const TCoordinates &other) const {
+    return (x == other.x && y == other.y);
+  };
+
+  int x;
+  int y;
+};
+
+extern "C" {
+#else
+// C-часть (только данные)
+typedef struct {
+  int x;
+  int y;
+} TCoordinates;
+#endif
+
+#ifdef __cplusplus
+}  // extern "C"
+#endif
 
 /**
  * @brief Struct with main game info
@@ -117,15 +141,12 @@ typedef struct {
   Model* model;
 } TetrisModel;
 
-void init_tetris_model(TetrisModel **state);
 
-/**
- * @brief delete all dynamic objects
- * @param state current game state
- */
-void clear_tetris(Model* state);
 
-void CastCoords(int **x, int **y, Model *model);
+
+
+
+// void free_matrix(int **matrix, int r_size);
 // static const int block_state[7][4][16] = {
 //   /*L_block*/ {{0, 0, 2, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 //                {2, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0},
@@ -162,9 +183,21 @@ void CastCoords(int **x, int **y, Model *model);
 //    {0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 //    {2, 0, 0, 0, 2, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0}}};
 
-void init_tetris_map(TetrisModel** state);
+// void init_tetris_map(TetrisModel** state);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @brief delete all dynamic objects
+ * @param state current game state
+ */
+void clear_tetris(Model* state);
 void TetrisUpdateModelData(TetrisModel* state, UserAction act);
-int c_library_calculate(float value);
+void init_tetris_model(TetrisModel **state);
+void CastCoords(TCoordinates* Coordinates, Model *model);
+// int c_library_calculate(float value);
 
 #ifdef __cplusplus
 }
