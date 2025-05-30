@@ -11,7 +11,7 @@ class TetrisGameTest : public ::testing::Test {
 };
 
 TEST_F(TetrisGameTest, MoveLeft) {
-  init_tetris_model(&tetris_model_); 
+  init_tetris_model(&tetris_model_);
   // tetris_model_.SetGameDataDefault();
   // tetris_game_data_ = &tetris_model_.GetTetrisGameData();
   // EXPECT_EQ(tetris_model_->t_game_status, GameState::kStart);
@@ -28,7 +28,8 @@ TEST_F(TetrisGameTest, MoveLeft) {
   // tetris_model_.UpdateModelData(UserAction::kLeft);
 
   // for (size_t i = 0; i < tmp_coords.size(); i++) {
-  //   EXPECT_EQ(tmp_coords[i].x - 2, tetris_game_data_->t_curr.GetCoords()[i].x);
+  //   EXPECT_EQ(tmp_coords[i].x - 2,
+  //   tetris_game_data_->t_curr.GetCoords()[i].x);
   // }
 }
 
@@ -263,7 +264,8 @@ TEST_F(TetrisGameTest, MoveLeft) {
 //   tetris_model_.UpdateModelData(s21::UserAction::kNoSig);
 
 //   for (size_t i = 0; i < tmp_coords.size(); i++) {
-//     EXPECT_EQ(tmp_coords[i].y + 1, tetris_game_data_->t_curr.GetCoords()[i].y);
+//     EXPECT_EQ(tmp_coords[i].y + 1,
+//     tetris_game_data_->t_curr.GetCoords()[i].y);
 //   }
 // }
 

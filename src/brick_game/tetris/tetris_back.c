@@ -10,7 +10,6 @@
  */
 #include "tetris_back.h"
 
-
 // void userInput(UserAction action, bool hold) {
 //   if (hold) {
 //     Model *state = get_set_current_map(NULL);
@@ -18,7 +17,7 @@
 //       case kSpaceBtn:
 //         break;
 //       case kEnterBtn:
-//         break;  
+//         break;
 //       case kEscBtn:
 //         break;
 //       case kTabBtn:
@@ -42,11 +41,11 @@
 //   }
 // }
 
-void UpdateLevel(Model* state) {
+void UpdateLevel(Model *state) {
   if (state->info->level < 10 && state->info->score > 600) {
     state->info->level = state->info->score / 600;
   }
-  state->curr_delay_ = kIntervalMs[state->info->level- 1];
+  state->curr_delay_ = kIntervalMs[state->info->level - 1];
 }
 
 uint64_t GetCurrTime() {
@@ -60,17 +59,17 @@ GameInfo_t updateCurrentState() {
   return *state->info;
 }
 
-void choose_blstate(int** buf, block_type bt, position pos, int spawn_pos_x) {
+void choose_blstate(int **buf, block_type bt, position pos, int spawn_pos_x) {
   int strnum = 2 + (pos % 2 * 2);
   for (int i = 0; i < strnum; ++i)
     for (int j = 0; j < 4; ++j)
-      if(bt == I_block) 
+      if (bt == I_block)
         buf[i][j + spawn_pos_x] = block_state[bt][pos][i * 4 + j];
       else
         buf[i][j + spawn_pos_x] = block_state[bt][pos][i * 4 + j];
 }
 
-void spawn_block(Model* state, int spawn_pos_x) {
+void spawn_block(Model *state, int spawn_pos_x) {
   state->rect.pos = 0;
   choose_blstate(state->info->field, state->block, state->rect.pos,
                  spawn_pos_x);
@@ -88,7 +87,7 @@ void init_tetris_map(Model **state) {
   // fprintf(file, "\n00\n");
   // fclose(file);
 
-  (*state) = (Model*)s21_malloc(1 * sizeof(Model));
+  (*state) = (Model *)s21_malloc(1 * sizeof(Model));
   // fprintf(stdout,"\n0");
   // (*state)->t_game_status = kStart;
   (*state)->last_moving_time_ = GetCurrTime();
@@ -96,49 +95,51 @@ void init_tetris_map(Model **state) {
   // if (file == NULL) {
   //     perror("Ошибка открытия файла");
   // }
-  
+
   // fprintf(file, "\n1\n");
   // fclose(file);
-    (*state)->curr_delay_ = kIntervalMs[0];
+  (*state)->curr_delay_ = kIntervalMs[0];
   // file = fopen("./tests/output.txt", "w");
   // if (file == NULL) {
   //     perror("Ошибка открытия файла");
   // }
-  
+
   // fprintf(file, "\n2\n");
   // fclose(file);
-    (*state)->info = (GameInfo_t *)s21_malloc(
-        1 * sizeof(GameInfo_t));  //(GameInfo_t *)calloc(1, sizeof(GameInfo_t));
-  // file = fopen("./tests/output.txt", "w");
-  // if (file == NULL) {
+  (*state)->info = (GameInfo_t *)s21_malloc(
+      1 * sizeof(GameInfo_t));  //(GameInfo_t *)calloc(1, sizeof(GameInfo_t));
+                                // file = fopen("./tests/output.txt", "w");
+                                // if (file == NULL) {
   //     perror("Ошибка открытия файла");
   // }
-  
+
   // fprintf(file, "\n3\n");
   // fclose(file);
-    (*state)->info->level = 1;
-    (*state)->info->speed = 2000000;
-    // fprintf(stdout,"\n1");
-    FILE *fp = fopen(FILE_SCORE, "r");
-    if (!fp) {
-      (*state)->info->high_score = 0;
-    } else {
-      fscanf(fp, "%d", &(*state)->info->high_score);
-      fclose(fp);
-    }
-  
-    (*state)->info->pause = 0;
-    (*state)->info->score = 0;
-    (*state)->info->field = (int **)s21_malloc(
-        WINDOW_HEIGHT *
-        sizeof(int *));  // (int **)calloc(WINDOW_HEIGHT, sizeof(int *));
-    for (int i = 0; i < WINDOW_HEIGHT; ++i)
-      (*state)->info->field[i] = (int *)s21_malloc(
-          WINDOW_HEIGHT *
-          sizeof(int));  //(int *)calloc(WINDOW_WIDTH, sizeof(int));
-    (*state)->info->next = NULL;
-    get_set_current_map(*state);
+  (*state)->info->level = 1;
+  (*state)->info->speed = 2000000;
+  // fprintf(stdout,"\n1");
+  FILE *fp = fopen(FILE_SCORE, "r");
+  if (!fp) {
+    (*state)->info->high_score = 0;
+  } else {
+    fscanf(fp, "%d", &(*state)->info->high_score);
+    fclose(fp);
   }
+
+  (*state)->info->pause = 0;
+  (*state)->info->score = 0;
+  (*state)->info->field = (int **)s21_malloc(
+      WINDOW_HEIGHT *
+      sizeof(int *));  // (int **)calloc(WINDOW_HEIGHT, sizeof(int *));
+  for (int i = 0; i < WINDOW_HEIGHT; ++i)
+    (*state)->info->field[i] = (int *)s21_malloc(
+        WINDOW_HEIGHT *
+        sizeof(int));  //(int *)calloc(WINDOW_WIDTH, sizeof(int));
+  (*state)->info->next = NULL;
+  (*state)->next_block = get_random_block();
+  (*state)->block = get_random_block();
+  get_set_current_map(*state);
+}
 
 void clear_tetris(Model *state) {
   for (int i = 0; i < WINDOW_HEIGHT; ++i) {
@@ -215,6 +216,30 @@ void try_right(Model *state) {
   }
 }
 
+// int can_down(Model *state) {
+//   int result = 0;
+//   bool is_can = true;
+//   if (state->rect.y2 == WINDOW_HEIGHT - 1) {
+//     for (int i = state->rect.x1; i <= state->rect.x2; ++i)
+//       if (state->info->field[WINDOW_HEIGHT - 1][i] == active_block)
+//         is_can = false;
+//     if (is_can) {
+//       // --state->rect.y1;
+//       --state->rect.y2;
+//     }
+//   }
+
+//   if (state->rect.y2 == WINDOW_HEIGHT - 1)
+//     result = 1;
+//   else {
+//     for (int i = state->rect.y1; i <= state->rect.y2; ++i)
+//       for (int j = state->rect.x1; j <= state->rect.x2; ++j)
+//         if (state->info->field[i][j] == active_block &&
+//             state->info->field[i + 1][j] == block)
+//           result = 1;
+//   }
+// }
+
 int try_down(Model *state) {
   int result = 0;
   bool is_can = true;
@@ -251,7 +276,6 @@ int try_down(Model *state) {
   return result;
 }
 
-
 void rotate_block(Model *state) {
   // int y_max = state->rect.y2 - state->rect.y1 + 1;
   // int x_max = state->rect.x2 - state->rect.x1 + 1;
@@ -271,6 +295,9 @@ void rotate_block(Model *state) {
       if ((buffer[i][j] > block &&
            state->info->field[state->rect.y1 + i][state->rect.x1 + j] ==
                block) ||
+          (buffer[i][j] == active_block &&
+           state->rect.y1 + i == WINDOW_HEIGHT - 1 && i < 3 &&
+           buffer[i + 1][j] == active_block) ||
           (j + state->rect.x1 == WINDOW_WIDTH &&
            state->info->field[i + state->rect.y1][WINDOW_WIDTH] !=
                buffer[i][j]) ||
@@ -340,23 +367,23 @@ void active_to_block(Model *state) {
 }
 
 void set_new_highscore(Model *state) {
-  if (mkdir(GAME_INFO_DIR, 0777)){
-        printf("Папка '%s' создана.\n", GAME_INFO_DIR);
-    } else {
-        switch (errno) {
-            case EEXIST:
-                printf("Папка '%s' уже существует.\n", GAME_INFO_DIR);
-                break;
-            case ENOENT:
-                printf("Ошибка: неверный путь.\n");
-                break;
-            case EACCES:
-                printf("Нет прав на создание папки.\n");
-                break;
-            default:
-                perror("Ошибка mkdir");
-        }
+  if (mkdir(GAME_INFO_DIR, 0777)) {
+    printf("Папка '%s' создана.\n", GAME_INFO_DIR);
+  } else {
+    switch (errno) {
+      case EEXIST:
+        printf("Папка '%s' уже существует.\n", GAME_INFO_DIR);
+        break;
+      case ENOENT:
+        printf("Ошибка: неверный путь.\n");
+        break;
+      case EACCES:
+        printf("Нет прав на создание папки.\n");
+        break;
+      default:
+        perror("Ошибка mkdir");
     }
+  }
   FILE *fp = fopen(FILE_SCORE, "wb");
   if (!fp) return;
   fprintf(fp, "%d", state->info->score);
@@ -408,20 +435,20 @@ Model *get_set_current_map(Model *state) {
   return state_;
 }
 
-void CastCoords(TCoordinates* Coordinates, Model *model){
+void CastCoords(TCoordinates *Coordinates, Model *model) {
   int j = 0;
   // int** matrix = (int**)malloc(4 * sizeof(int*));
   // for(int i = 0; i<4; ) matrix[i] = (int*)malloc(2 * sizeof(int));
-  for(int i = 0; i<4; ) { 
-    
-    if(block_state[model->next_block][0][j]!=0){
-      Coordinates[i].x = j%4 + tFieldWidth / 2 -1; 
-      Coordinates[i].y = j/4; 
+  for (int i = 0; i < 4;) {
+    if (block_state[model->next_block][0][j] != 0) {
+      Coordinates[i].x = j % 4 + tFieldWidth / 2 - 1;
+      Coordinates[i].y = j / 4;
       ++i;
     }
-    while(block_state[model->next_block][0][++j]==0);
-    Coordinates[i].x = j%4 + tFieldWidth / 2 -1; 
-    Coordinates[i].y = j/4; 
+    while (block_state[model->next_block][0][++j] == 0)
+      ;
+    Coordinates[i].x = j % 4 + tFieldWidth / 2 - 1;
+    Coordinates[i].y = j / 4;
     ++i;
     ++j;
   }

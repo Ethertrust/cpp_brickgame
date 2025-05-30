@@ -93,7 +93,8 @@ void View::paintEvent(QPaintEvent *event) {
       }
     } else {
       ClearField();
-      GameOver(false, t_data_->model->info->high_score, t_data_->model->info->score);
+      GameOver(false, t_data_->model->info->high_score,
+               t_data_->model->info->score);
     }
   }
 }
@@ -184,7 +185,8 @@ void View::UpdateTetrisModel() {
   action_ = static_cast<UserAction>(static_cast<int>(kNoSig));
   ui_->tetris_curr_score->setText(QString::number(t_data_->model->info->score));
   ui_->tetris_curr_level->setText(QString::number(t_data_->model->info->level));
-  ui_->tetris_best_score->setText(QString::number(t_data_->model->info->high_score));
+  ui_->tetris_best_score->setText(
+      QString::number(t_data_->model->info->high_score));
   if (t_data_->t_game_status == kGameOver ||
       t_data_->t_game_status == kGameOver) {
     m_timer_->stop();
@@ -233,7 +235,7 @@ void View::TetrisGameRendering() {
   QPainter qp(this);
 
   // qp.setBrush(QColor(90, 90, 90));
-  qp.setPen(QColor(0, 0, 0));
+  qp.setPen(kColors[9]);
 
   // // current tetromino projection
   // qp.setBrush(kColors[0]);
@@ -255,19 +257,25 @@ void View::TetrisGameRendering() {
   // next tetromino
   // std::cout << 0.5 ;
   for (const auto &item : tetris_controller_->GetCoords()) {
-    qp.setBrush(kColors[static_cast<int>(t_data_->model->next_block)]);
-    qp.drawRect((item.x + 8) * tDotSize,
-                (item.y + 2) * tDotSize, tDotSize - 1,
+    qp.setBrush(kColors[static_cast<int>(t_data_->model->next_block) + 1]);
+    qp.drawRect((item.x + 8) * tDotSize, (item.y + 2) * tDotSize, tDotSize - 1,
                 tDotSize - 1);
   }
   // std::cout << 0.6 ;
   // board
   for (int i = 1; i < tFieldHeight; ++i) {
     for (int j = 0; j < tFieldWidth; ++j) {
-      if (t_data_->model->info->field[i][j]==0) qp.setBrush(kColors[7]); //static_cast<int>(t_data_->model->field[i][j])
-      else if (t_data_->model->info->field[i][j]==1) qp.setBrush(kColors[8]); //static_cast<int>(t_data_->model->field[i][j])
-      else if (t_data_->model->info->field[i][j]==2) qp.setBrush(kColors[static_cast<int>(t_data_->model->block)]);//static_cast<int>(t_data_->model->field[i][j])
-      qp.drawRect(j * tDotSize, (i-1) * tDotSize, tDotSize - 1, tDotSize - 1);
+      if (t_data_->model->info->field[i][j] == 0)
+        qp.setBrush(
+            kColors[9]);  // static_cast<int>(t_data_->model->field[i][j])
+      else if (t_data_->model->info->field[i][j] == 1)
+        qp.setBrush(
+            kColors[8]);  // static_cast<int>(t_data_->model->field[i][j])
+      else if (t_data_->model->info->field[i][j] == 2)
+        qp.setBrush(
+            kColors[static_cast<int>(t_data_->model->block) +
+                    1]);  // static_cast<int>(t_data_->model->field[i][j])
+      qp.drawRect(j * tDotSize, (i - 1) * tDotSize, tDotSize - 1, tDotSize - 1);
     }
   }
   // std::cout << 0.7 ;
@@ -285,4 +293,3 @@ void View::PauseWindowRendering(QLabel *p_label) {
 }
 
 }  // namespace s21
-

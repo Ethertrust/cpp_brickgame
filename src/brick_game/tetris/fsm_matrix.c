@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 
-
 // UserAction player_input(int input) {
 //   UserAction action = 0;
 //   switch (input) {
@@ -43,12 +42,12 @@
 // }
 
 void init_tetris_model(TetrisModel **state) {
-  (*state) = (TetrisModel*)s21_malloc(1 * sizeof(TetrisModel));
+  (*state) = (TetrisModel *)s21_malloc(1 * sizeof(TetrisModel));
   init_tetris_map(&((*state)->model));
 }
 
 void SpawnNewTetromino(TetrisModel *state) {
-  fprintf(stdout, "\n3.4\n");
+  // fprintf(stdout, "\n3.4\n");
   switch (state->model->block) {
     case L_block:
       spawn_block(state->model, SPAWN_POS_X);
@@ -74,53 +73,64 @@ void SpawnNewTetromino(TetrisModel *state) {
     default:
       break;
   }
-  state->t_game_status = kMoving; 
-  fprintf(stdout, "\n3.5\n");
+  state->t_game_status = kMoving;
+  // fprintf(stdout, "\n3.5\n");
 }
 
-void MoveTetrominoLeft(TetrisModel *state){ try_left(state->model); }
-void MoveTetrominoRight(TetrisModel *state){ try_right(state->model); }
-void MoveTetrominoDown(TetrisModel *state){ try_down(state->model); }
-void DropTetromino(TetrisModel *state){ while(!(try_down(state->model))); }
-void RotateTetromino(TetrisModel *state){ rotate_block(state->model); }
+void MoveTetrominoLeft(TetrisModel *state) { try_left(state->model); }
+void MoveTetrominoRight(TetrisModel *state) { try_right(state->model); }
+void MoveTetrominoDown(TetrisModel *state) { try_down(state->model); }
+void DropTetromino(TetrisModel *state) {
+  while (!(try_down(state->model)))
+    ;
+}
+void RotateTetromino(TetrisModel *state) { rotate_block(state->model); }
 
-void SetPause(TetrisModel *state) { state->t_game_status = kPause; fprintf(stdout, "\n5\n");  }
+void SetPause(TetrisModel *state) {
+  state->t_game_status = kPause;
+  // fprintf(stdout, "\n5\n");
+}
 
-void CancelPause(TetrisModel *state) { state->t_game_status = kMoving; fprintf(stdout, "\n4\n");  }
+void CancelPause(TetrisModel *state) {
+  state->t_game_status = kMoving;
+  // fprintf(stdout, "\n4\n");
+}
 
-void ExitGame(TetrisModel *state) { state->t_game_status = kGameOver; if (state->model->info->high_score < state->model->info->score) set_new_highscore(state->model);  }
+void ExitGame(TetrisModel *state) {
+  state->t_game_status = kGameOver;
+  if (state->model->info->high_score < state->model->info->score)
+    set_new_highscore(state->model);
+}
 
-void StartGame(TetrisModel *state) { state->t_game_status = kSpawn; fprintf(stdout, "\n3\n"); }
+void StartGame(TetrisModel *state) {
+  state->t_game_status = kSpawn;
+  // fprintf(stdout, "\n3\n");
+}
 
-void TetrisUpdateModelData(TetrisModel* state, UserAction act) {
+void TetrisUpdateModelData(TetrisModel *state, UserAction act) {
   uint64_t curr_time = state->model->last_moving_time_;
   if (state->t_game_status != kPause) {
     curr_time = GetCurrTime();
   }
 
-  Action func = kTetrisActionTable[(int)(state->t_game_status)]
-                                  [(int)(act)];
+  Action func = kTetrisActionTable[(int)(state->t_game_status)][(int)(act)];
   if (func) {
     (*func)(state);
   }
 
   if (state->t_game_status == kMoving) {
-    if (curr_time - state->model->last_moving_time_ > state->model->curr_delay_) {
+    if (curr_time - state->model->last_moving_time_ >
+        state->model->curr_delay_) {
       state->model->last_moving_time_ = curr_time;
-      if(!game_process(state)) {
-        fprintf(stdout, "\n3.65\n");
-        if (state->model->info->high_score < state->model->info->score) set_new_highscore(state->model);
-        fprintf(stdout, "\n3.67\n");
+      if (!game_process(state)) {
+        if (state->model->info->high_score < state->model->info->score)
+          set_new_highscore(state->model);
         state->t_game_status = kGameOver;
       }
-      fprintf(stdout, "\n3.7\n");
       MoveTetrominoDown(state);
-      fprintf(stdout, "\n3.8\n");
     }
     UpdateLevel(state->model);
-    fprintf(stdout, "\n3.9\n");
   }
-  // fprintf(stdout, "\n3.99\n");
 }
 
 // void game_loop_2() {
@@ -148,7 +158,8 @@ void TetrisUpdateModelData(TetrisModel* state, UserAction act) {
 //     else if (input_result == 2)
 //       is_game = false;
 
-//     if (state.info->high_score < state.info->score) set_new_highscore(&state);
+//     if (state.info->high_score < state.info->score)
+//     set_new_highscore(&state);
 //   }
 //   print_end_menu(state.info->score);
 //   clear_tetris(&state);
@@ -185,7 +196,7 @@ bool game_process(TetrisModel *state) {
       // SpawnNewTetromino(state);
       state->model->next_block = get_random_block();
       state->t_game_status = kSpawn;
-      fprintf(stdout, "\n3.6\n");
+      // fprintf(stdout, "\n3.6\n");
     }
   }
   return result;

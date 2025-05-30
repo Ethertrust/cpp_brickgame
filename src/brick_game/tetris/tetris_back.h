@@ -11,7 +11,7 @@
 
 #ifndef TETRIS_V2
 #define TETRIS_V2
-//cli
+// cli
 #define WINDOW_WIDTH 10
 #define WINDOW_HEIGHT 21
 #define SPAWN_POS_X 3
@@ -21,7 +21,7 @@
 #define BAD_ALLOC 1
 #define INTERVALS \
   { 500, 420, 340, 260, 230, 200, 180, 160, 140, 125 }
-//window
+// window
 #define tDotSize 30
 #define tFieldWidth 10
 #define tFieldHeight 21
@@ -29,13 +29,13 @@
 #define tWindowWidth 22
 #define tWindowHeight 22
 
+#include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <sys/time.h>
-#include <sys/stat.h> 
-#include <errno.h>
 /**
  * @brief enum with all block types of tetris
  *
@@ -61,9 +61,9 @@ typedef enum position { top, left, bottom, right } position;
 #ifdef __cplusplus
 // C++-часть с конструкторами и операторами
 struct TCoordinates {
-  TCoordinates() : x(0), y(0) {};
-  TCoordinates(int x_, int y_) : x(x_), y(y_) {};
-  bool operator==(const TCoordinates &other) const {
+  TCoordinates() : x(0), y(0){};
+  TCoordinates(int x_, int y_) : x(x_), y(y_){};
+  bool operator==(const TCoordinates& other) const {
     return (x == other.x && y == other.y);
   };
 
@@ -151,7 +151,6 @@ uint64_t GetCurrTime();
  * @return current game state
  */
 GameInfo_t updateCurrentState();
-
 
 /**
  * @brief moves active piece in left if is no obstacle
@@ -275,7 +274,7 @@ int** s21_malloc_matrix(const size_t y, const size_t x);
  */
 void free_matrix(int** matrix, int r_size);
 
-void CastCoords(TCoordinates* Coordinates, Model *model);
+void CastCoords(TCoordinates* Coordinates, Model* model);
 
 static const uint64_t kIntervalMs[10] = INTERVALS;
 

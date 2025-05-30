@@ -13,7 +13,7 @@ DIR_BACK_TETRIS := brick_game/tetris
 BUILD_DIR := ../build
 IMAGE_DIR := images
 SRC_DIR := .
-EXTENSIONS := cc cpp h
+EXTENSIONS := cc cpp h c
 DIR_LIBRARY_TETRIS := static_L
 
 RM_RULE := rm -rf test *.dSYM coverage report res *.info *.gcda *.gcno snake_game ../build ../BrickGame_v2-0.tar.gz SnakeScore.txt TetrisScore.txt

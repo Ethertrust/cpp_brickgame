@@ -32,7 +32,7 @@ class View : public QMainWindow {
   View(SnakeController *s_c, TetrisController *t_c, QWidget *parent = nullptr);
   ~View();
 
-  const QColor kColors[8] = {
+  const QColor kColors[10] = {
       QColor(147, 147, 147),  // gray
       QColor(255, 0, 0),      // red
       QColor(103, 250, 0),    // green
@@ -41,6 +41,8 @@ class View : public QMainWindow {
       QColor(250, 235, 5),    // yellow
       QColor(250, 124, 5),    // orange
       QColor(5, 20, 250),     // blue
+      QColor(255, 255, 255),  // white
+      QColor(0, 0, 0),        // black
   };
 
  protected:

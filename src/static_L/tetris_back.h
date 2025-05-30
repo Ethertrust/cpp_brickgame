@@ -2,8 +2,6 @@
 #ifndef TETRIS_BACK_H
 #define TETRIS_BACK_H
 
-
-
 #define tDotSize 30
 #define tFieldWidth 10
 #define tFieldHeight 21
@@ -59,9 +57,9 @@ typedef enum position { top, left, bottom, right } position;
 #ifdef __cplusplus
 // C++-часть с конструкторами и операторами
 struct TCoordinates {
-  TCoordinates() : x(0), y(0) {};
-  TCoordinates(int x_, int y_) : x(x_), y(y_) {};
-  bool operator==(const TCoordinates &other) const {
+  TCoordinates() : x(0), y(0){};
+  TCoordinates(int x_, int y_) : x(x_), y(y_){};
+  bool operator==(const TCoordinates& other) const {
     return (x == other.x && y == other.y);
   };
 
@@ -141,11 +139,6 @@ typedef struct {
   Model* model;
 } TetrisModel;
 
-
-
-
-
-
 // void free_matrix(int **matrix, int r_size);
 // static const int block_state[7][4][16] = {
 //   /*L_block*/ {{0, 0, 2, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -195,8 +188,8 @@ extern "C" {
  */
 void clear_tetris(Model* state);
 void TetrisUpdateModelData(TetrisModel* state, UserAction act);
-void init_tetris_model(TetrisModel **state);
-void CastCoords(TCoordinates* Coordinates, Model *model);
+void init_tetris_model(TetrisModel** state);
+void CastCoords(TCoordinates* Coordinates, Model* model);
 // int c_library_calculate(float value);
 
 #ifdef __cplusplus
