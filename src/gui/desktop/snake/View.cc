@@ -5,23 +5,21 @@
 
 namespace s21 {
 
-View::View(SnakeController *s_c, TetrisController *t_c, QWidget *parent)
+View::View(QWidget *parent)
     : QMainWindow(parent),
       ui_(new Ui::View),
       current_game_(CurrentGame::kNone),
       action_(UserAction::kNoSig),
       s_data_(nullptr),
-      t_data_(nullptr),
-      snake_controller_(s_c),
-      tetris_controller_(t_c) {
+      t_data_(nullptr) {
   ui_->setupUi(this);
   move(1000, 300);
   setWindowTitle("Snake Game");
   ui_->stackedWidget->setCurrentIndex(1);
-  tetris_controller_->SetModelDataDefault();
-  t_data_ = &tetris_controller_->GetModelData();
-  snake_controller_->SetModelDataDefault();
-  s_data_ = &snake_controller_->GetModelData();
+  // tetris_controller_->SetModelDataDefault();
+  // t_data_ = &tetris_controller_->GetModelData();
+  // snake_controller_->SetModelDataDefault();
+  // s_data_ = &snake_controller_->GetModelData();
   m_timer_ = new QTimer(this);
   connect(m_timer_, &QTimer::timeout, this, &View::UpdateAll);
 }
@@ -143,6 +141,9 @@ void View::on_playAgain_clicked() {
 }
 
 void View::on_start_snake_btn_clicked() {
+  SnakeModel s_model;
+  // SnakeController s_controller(&s_model);
+  snake_controller_ = new SnakeController(&s_model);
   current_game_ = CurrentGame::kSnake;
   snake_controller_->SetModelDataDefault();
   s_data_ = &snake_controller_->GetModelData();
@@ -151,6 +152,8 @@ void View::on_start_snake_btn_clicked() {
 }
 
 void View::on_start_tetris_btn_clicked() {
+  // TetrisController t_controller *;
+  tetris_controller_ = new TetrisController();
   current_game_ = CurrentGame::kTetris;
   tetris_controller_->SetModelDataDefault();
   t_data_ = &tetris_controller_->GetModelData();
@@ -161,6 +164,8 @@ void View::on_start_tetris_btn_clicked() {
 void View::on_exit_btn_clicked() { close(); }
 
 void View::on_closeGame_clicked() {
+  if(tetris_controller_) tetris_controller_->~TetrisController();
+  if(snake_controller_)  snake_controller_->~SnakeController();
   current_game_ = CurrentGame::kNone;
   ui_->stackedWidget->setCurrentIndex(1);
 }

@@ -29,7 +29,7 @@ class View : public QMainWindow {
   Q_OBJECT
 
  public:
-  View(SnakeController *s_c, TetrisController *t_c, QWidget *parent = nullptr);
+  View(QWidget *parent = nullptr);
   ~View();
 
   const QColor kColors[10] = {
