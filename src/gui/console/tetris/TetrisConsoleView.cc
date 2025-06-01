@@ -5,7 +5,7 @@ namespace s21 {
 
 TetrisConsoleView::TetrisConsoleView(TetrisController *c) : controller_(c) {
   t_data_ = &controller_->GetModelData();
-  t_action_ = UserAction::kNoSig;
+  t_action_ = UserAction_t::kNoSig;
 }
 
 void TetrisConsoleView::Start() {
@@ -13,15 +13,15 @@ void TetrisConsoleView::Start() {
   controller_->SetModelDataDefault();
   t_data_ = &controller_->GetModelData();
   TetrisMainLoop();
-  if (t_data_->t_game_status == GameState::kGameOver ||
-      t_data_->t_game_status == GameState::kGameOver) {
+  if (t_data_->t_game_status == GameState_t::kGameOver ||
+      t_data_->t_game_status == GameState_t::kGameOver) {
     GameResultRendering(false, t_data_->info->high_score, t_data_->info->score);
   }
 }
 
 void TetrisConsoleView::TetrisMainLoop() {
-  while (t_data_->t_game_status != GameState::kGameOver &&
-         t_data_->t_game_status != GameState::kGameOver) {
+  while (t_data_->t_game_status != GameState_t::kGameOver &&
+         t_data_->t_game_status != GameState_t::kGameOver) {
     if (t_data_->is_modified) {
       Rendering();
     }
@@ -34,9 +34,9 @@ void TetrisConsoleView::TetrisMainLoop() {
 }
 
 void TetrisConsoleView::Rendering() {
-  if (t_data_->t_game_status == GameState::kStart) {
+  if (t_data_->t_game_status == GameState_t::kStart) {
     StartGameRendering();
-  } else if (t_data_->t_game_status == GameState::kPause) {
+  } else if (t_data_->t_game_status == GameState_t::kPause) {
     PauseRendering(t_data_->t_level, t_data_->t_score);
   } else {
     GameRendering();
@@ -46,7 +46,7 @@ void TetrisConsoleView::Rendering() {
 void TetrisConsoleView::ModelConnect() {
   controller_->UpdateModelData(t_action_);
   TetrisModel tmp_data = controller_->GetModelData();
-  t_action_ = UserAction::kNoSig;
+  t_action_ = UserAction_t::kNoSig;
 }
 
 void TetrisConsoleView::GameRendering() {

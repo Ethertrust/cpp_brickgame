@@ -1,13 +1,13 @@
 // Copyright 2025 shericen
-#ifndef BRICK_GAME_SNAKE_SNAKEMODEL_H_
-#define BRICK_GAME_SNAKE_SNAKEMODEL_H_
+#ifndef BRICK_GAME_SNAKE_SNAKEBACK_H_
+#define BRICK_GAME_SNAKE_SNAKEBACK_H_
 
 #include <fstream>
 #include <iostream>
 #include <random>
 #include <vector>
 
-#include "../common/BaseModel.h"
+#include "../snake/BaseModel.h"
 
 struct Coordinates {
   Coordinates() : x(0), y(0) {}
@@ -23,14 +23,14 @@ namespace s21 {
 
 enum class Direction { kUp, kDown, kRight, kLeft };
 
-enum class GameState { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver };
+enum class GameState_t { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver };
 
 struct SnakeGameData {
   Coordinates fruit_coord;
   std::vector<Coordinates> snake_coord;
   Direction direction;
   bool is_victory;
-  GameState game_status;
+  GameState_t game_status;
   int curr_score;
   int best_score;
   int level;
@@ -42,7 +42,7 @@ struct SnakeGameData {
         snake_coord(),
         direction(Direction::kUp),
         is_victory(false),
-        game_status(GameState::kStart),
+        game_status(GameState_t::kStart),
         curr_score(0),
         best_score(0),
         level(1),
@@ -62,7 +62,7 @@ class SnakeModel : public BaseModel {
   SnakeModel();
   ~SnakeModel();
 
-  void UpdateData(UserAction action);
+  void UpdateData(UserAction_t action);
 
   void SetGameDataDefault();
   SnakeGameData& GetModelData();
@@ -126,4 +126,4 @@ class SnakeModel : public BaseModel {
 
 }  // namespace s21
 
-#endif  // BRICK_GAME_SNAKE_SNAKEMODEL_H_
+#endif  // BRICK_GAME_SNAKE_SNAKEBACK_H_

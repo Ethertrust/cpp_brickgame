@@ -4,51 +4,22 @@
 #include "tetris_back.h"
 
 /**
- * @brief Enum with possible game states
- *
- */
-typedef enum GameState {
-  kStart,
-  kSpawn,
-  kMoving,
-  kCollide,
-  kPause,
-  kGameOver
-} GameState;
-
-/**
- * @brief Enum with possible user Action
- *
- */
-typedef enum {
-  kNoSig,
-  kLeft,
-  kRight,
-  kDown,
-  kUp,
-  kSpaceBtn,
-  kEnterBtn,
-  kEscBtn,
-  kTabBtn
-} UserAction;
-
-/**
  * @brief struct with all info for game map
  * @param model contains game map, score, level, speed and highscore of game
- * @param GameState current active state
+ * @param GameState_t current active state
  */
 typedef struct {
-  GameState t_game_status;
+  GameState_t t_game_status;
   Model* model;
 } TetrisModel;
 
 void init_tetris_model(TetrisModel** state);
 
-// UserAction player_input(int input);
+// UserAction_t player_input(int input);
 // void game_pause();
 // int game_input(TetrisModel* state);
 bool game_process(TetrisModel* state);
-void TetrisUpdateModelData(TetrisModel* state, UserAction act);
+void TetrisUpdateModelData(TetrisModel* state, UserAction_t act);
 // void game_loop_2();
 void MoveTetrominoLeft(TetrisModel* state);
 void MoveTetrominoRight(TetrisModel* state);
@@ -65,6 +36,13 @@ void StartGame(TetrisModel* state);
  * @param block type of spawn block
  */
 void SpawnNewTetromino(TetrisModel* state);
+
+/**
+ * @brief set new game state or return current game state if *state == NULL
+ * @param state current game state
+ * @return current game state
+ */
+TetrisModel* get_set_current_map(TetrisModel* state);
 
 typedef void (*Action)(TetrisModel*);
 

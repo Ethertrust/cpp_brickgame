@@ -10,11 +10,13 @@ GCO := -fprofile-arcs -ftest-coverage -O0
 # Directories and files
 DIR_GAME_INFO := game_info
 DIR_BACK_TETRIS := brick_game/tetris
+DIR_BACK_SNAKE := brick_game/snake
+DIR_BACK := $(DIR_BACK_SNAKE) $(DIR_BACK_TETRIS)
 BUILD_DIR := ../build
 IMAGE_DIR := images
 SRC_DIR := .
 EXTENSIONS := cc cpp h c
-DIR_LIBRARY_TETRIS := static_L
+DIR_LIBRARY := static_L
 
 RM_RULE := rm -rf test *.dSYM coverage report res *.info *.gcda *.gcno snake_game ../build ../BrickGame_v2-0.tar.gz SnakeScore.txt TetrisScore.txt
 
@@ -24,21 +26,21 @@ SRC_FILES := $(call find_files,$(SRC_DIR))
 CC_FILES := $(filter-out ./gui/desktop/main.cc ./gui/desktop/SnakeView.cc, $(filter %.cc,$(SRC_FILES)))
 
 LIBRARY_BACK_TETRIS := $(patsubst %.c,%.o,$(wildcard $(DIR_BACK_TETRIS)/*.c))
+LIBRARY_BACK_SNAKE := $(patsubst %.cc,%.o,$(wildcard $(DIR_BACK_SNAKE)/*.cc))
 
-TEST_SOURCES :=  tests/tetris_test.cc #tests/snake_test.cc\
+TEST_SOURCES :=  tests/snake_test.cc
 
 
-GCOV_SOURCES := brick_game/common/BaseModel.cc \
-				brick_game/snake/SnakeModel.cc \
-				brick_game/tetris/TetrisModel.cc \
-				brick_game/tetris/Tetromino.cc
+GCOV_SOURCES := brick_game/snake/BaseModel.cc \
+				brick_game/snake/SnakeModel.cc \				
+				brick_game/tetris/SnakeModel.cc \
 
 # Targets
 .PHONY: all install uninstall clean dvi dist test
 
 all: install test
 
-install: libbrick_game
+install: libbrick_game_tetris libbrick_game_snake
 	mkdir -p $(DIR_GAME_INFO)
 	mkdir -p $(BUILD_DIR)
 	cp -rf $(IMAGE_DIR) $(BUILD_DIR)
@@ -46,9 +48,13 @@ install: libbrick_game
 
 uninstall: clean
 
-libbrick_game: $(LIBRARY_BACK_TETRIS)
-	ar rcs $(DIR_LIBRARY_TETRIS)/tetris_back.a $^
+libbrick_game_tetris: $(LIBRARY_BACK_TETRIS)
+	ar rcs $(DIR_LIBRARY)/tetris_back.a $^
 	-rm $(DIR_BACK_TETRIS)/*.o
+
+libbrick_game_snake: $(LIBRARY_BACK_SNAKE)
+	ar rcs $(DIR_LIBRARY)/snake_back.a $^
+	-rm $(DIR_BACK_SNAKE)/*.o
 
 run_desktop:
 	$(BUILD_DIR)/desktopBrickGame

@@ -14,7 +14,7 @@
  * @brief Enum with possible game states
  *
  */
-typedef enum { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver } GameState;
+typedef enum { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver } GameState_t;
 
 /**
  * @brief Enum with possible user Action
@@ -30,7 +30,7 @@ typedef enum {
   kEnterBtn,
   kEscBtn,
   kTabBtn
-} UserAction;
+} UserAction_t;
 
 /**
  * @brief enum with all block types of tetris
@@ -45,6 +45,13 @@ typedef enum block_type {
   RL_block,
   RZ_block
 } block_type;
+
+/**
+ * @brief
+ *
+ * @return current game state
+ */
+GameInfo_t updateCurrentState();
 
 /**
  * @brief enum with all types of game cell state
@@ -67,7 +74,7 @@ struct TCoordinates {
   int y;
 };
 
-extern "C" {
+// extern "C" {
 #else
 // C-часть (только данные)
 typedef struct {
@@ -76,9 +83,9 @@ typedef struct {
 } TCoordinates;
 #endif
 
-#ifdef __cplusplus
-}  // extern "C"
-#endif
+// #ifdef __cplusplus
+// }  // extern "C"
+// #endif
 
 /**
  * @brief Struct with main game info
@@ -132,10 +139,10 @@ typedef struct {
 /**
  * @brief struct with all info for game map
  * @param model contains game map, score, level, speed and highscore of game
- * @param GameState current active state
+ * @param GameState_t current active state
  */
 typedef struct {
-  GameState t_game_status;
+  GameState_t t_game_status;
   Model* model;
 } TetrisModel;
 
@@ -187,7 +194,7 @@ extern "C" {
  * @param state current game state
  */
 void clear_tetris(Model* state);
-void TetrisUpdateModelData(TetrisModel* state, UserAction act);
+void TetrisUpdateModelData(TetrisModel* state, UserAction_t act);
 void init_tetris_model(TetrisModel** state);
 void CastCoords(TCoordinates* Coordinates, Model* model);
 // int c_library_calculate(float value);

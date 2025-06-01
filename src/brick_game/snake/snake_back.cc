@@ -12,12 +12,12 @@ SnakeModel::~SnakeModel() {
   s_data_.snake_coord.clear();
 }
 
-void SnakeModel::UpdateData(UserAction action) {
+void SnakeModel::UpdateData(UserAction_t action) {
   s_data_.is_modified = false;
   SnakeGameData data_cast = s_data_;
 
   curr_time_ = last_moving_time_;
-  if (s_data_.game_status != GameState::kPause) {
+  if (s_data_.game_status != GameState_t::kPause) {
     curr_time_ = GetCurrTime();
   }
 
@@ -27,7 +27,7 @@ void SnakeModel::UpdateData(UserAction action) {
     (this->*func)();
   }
 
-  if (s_data_.game_status == GameState::kMoving) {
+  if (s_data_.game_status == GameState_t::kMoving) {
     if (curr_time_ - last_moving_time_ > curr_delay_) {
       MoveSnake();
     }
@@ -44,7 +44,7 @@ void SnakeModel::SetGameDataDefault() {
   s_data_.curr_score = 0;
   s_data_.level = 1;
   s_data_.direction = Direction::kUp;
-  s_data_.game_status = GameState::kStart;
+  s_data_.game_status = GameState_t::kStart;
   s_data_.snake_coord.clear();
   s_data_.snake_coord.reserve(200);
 
@@ -62,7 +62,7 @@ void SnakeModel::SetGameDataDefault(int score) {
   s_data_.curr_score = score;
   s_data_.level = 1;
   s_data_.direction = Direction::kUp;
-  s_data_.game_status = GameState::kMoving;
+  s_data_.game_status = GameState_t::kMoving;
   s_data_.snake_coord.clear();
   s_data_.snake_coord.reserve(200);
 
@@ -122,16 +122,16 @@ void SnakeModel::MoveSnakeBody() {
 void SnakeModel::CheckSnakeLife() {
   for (std::size_t i = 1; i < s_data_.snake_coord.size(); ++i) {
     if (s_data_.snake_coord[0] == s_data_.snake_coord[i]) {
-      s_data_.game_status = GameState::kCollide;
+      s_data_.game_status = GameState_t::kCollide;
     }
   }
   if (s_data_.snake_coord[0].x < 0 ||
       s_data_.snake_coord[0].x >= GameSizes::kFieldWidth) {
-    s_data_.game_status = GameState::kCollide;
+    s_data_.game_status = GameState_t::kCollide;
   }
   if (s_data_.snake_coord[0].y < 0 ||
       s_data_.snake_coord[0].y >= GameSizes::kFieldHeight) {
-    s_data_.game_status = GameState::kCollide;
+    s_data_.game_status = GameState_t::kCollide;
   }
 }
 
@@ -148,7 +148,7 @@ void SnakeModel::CheckSnakeEating() {
     }
     if (s_data_.curr_score == 200) {
       s_data_.is_victory = true;
-      s_data_.game_status = GameState::kGameOver;
+      s_data_.game_status = GameState_t::kGameOver;
     }
     UpdateFruitPos();
   }
@@ -195,16 +195,16 @@ void SnakeModel::MoveHeadDown() {
   last_moving_time_ = curr_time_;
 }
 
-void SnakeModel::Spawn() { s_data_.game_status = GameState::kMoving; }
+void SnakeModel::Spawn() { s_data_.game_status = GameState_t::kMoving; }
 
-void SnakeModel::SetPause() { s_data_.game_status = GameState::kPause; }
+void SnakeModel::SetPause() { s_data_.game_status = GameState_t::kPause; }
 
-void SnakeModel::CancelPause() { s_data_.game_status = GameState::kMoving; }
+void SnakeModel::CancelPause() { s_data_.game_status = GameState_t::kMoving; }
 
-void SnakeModel::ExitGame() { s_data_.game_status = GameState::kGameOver; }
+void SnakeModel::ExitGame() { s_data_.game_status = GameState_t::kGameOver; }
 
-void SnakeModel::Collide() { s_data_.game_status = GameState::kGameOver; }
+void SnakeModel::Collide() { s_data_.game_status = GameState_t::kGameOver; }
 
-void SnakeModel::StartGame() { s_data_.game_status = GameState::kSpawn; }
+void SnakeModel::StartGame() { s_data_.game_status = GameState_t::kSpawn; }
 
 }  // namespace s21

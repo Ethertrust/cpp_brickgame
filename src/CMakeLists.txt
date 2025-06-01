@@ -37,17 +37,18 @@ include_directories(
 
 # Общие исходные файлы
 set(BRICK_GAME_LIB ${CMAKE_CURRENT_SOURCE_DIR}/static_L/tetris_back.a)
-set(COMMON_SOURCES
-    brick_game/snake/SnakeModel.cc
-    brick_game/snake/SnakeModel.h
-    # brick_game/tetris/TetrisModel.cc
-    # brick_game/tetris/TetrisModel.h
-    # brick_game/tetris/Tetromino.h
-    # brick_game/tetris/Tetromino.cc
-    brick_game/common/Constants.h
-    brick_game/common/BaseModel.h
-    brick_game/common/BaseModel.cc
-)
+set(BRICK_GAME_LIB ${CMAKE_CURRENT_SOURCE_DIR}/static_L/snake_back.a )
+# set(COMMON_SOURCES
+#     brick_game/snake/SnakeModel.cc
+#     brick_game/snake/SnakeModel.h
+#     # brick_game/tetris/TetrisModel.cc
+#     # brick_game/tetris/TetrisModel.h
+#     # brick_game/tetris/Tetromino.h
+#     # brick_game/tetris/Tetromino.cc
+#     brick_game/common/Constants.h
+#     brick_game/common/BaseModel.h
+#     brick_game/common/BaseModel.cc
+# )
 
 # # Консольное приложение
 # add_executable(consoleBrickGame
@@ -68,7 +69,7 @@ set(COMMON_SOURCES
 
 # Десктопное приложение
 add_executable(desktopBrickGame
-    ${COMMON_SOURCES}
+    # ${COMMON_SOURCES}
     controller/SnakeController.h
     controller/TetrisController.h
     gui/desktop/snake/main.cc

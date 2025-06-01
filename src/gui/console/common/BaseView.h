@@ -37,7 +37,7 @@ class BaseView {
   static void GameResultRendering(bool is_victory, int level, int score);
   static void PauseRendering(int level, int score);
   static void StartGameRendering();
-  static UserAction GetAction();
+  static UserAction_t GetAction();
 
   static Choose InitMenu();
   static void MenuRendering(const std::size_t& selectedItem);

@@ -4,22 +4,22 @@
 namespace s21 {
 
 SnakeConsoleView::SnakeConsoleView(SnakeController* c)
-    : action_(UserAction::kNoSig), data_(), controller_(c) {}
+    : action_(UserAction_t::kNoSig), data_(), controller_(c) {}
 
 void SnakeConsoleView::Start() {
   nodelay(stdscr, TRUE);
   controller_->SetModelDataDefault();
   data_ = &controller_->GetModelData();
   SnakeMainLoop();
-  if (data_->game_status == GameState::kGameOver ||
-      data_->game_status == GameState::kGameOver) {
+  if (data_->game_status == GameState_t::kGameOver ||
+      data_->game_status == GameState_t::kGameOver) {
     GameResultRendering(data_->is_victory, data_->best_score,
                         data_->curr_score);
   }
 }
 
 void SnakeConsoleView::SnakeMainLoop() {
-  while (data_->game_status != GameState::kGameOver) {
+  while (data_->game_status != GameState_t::kGameOver) {
     if (data_->is_modified) {
       Rendering();
     }
@@ -32,9 +32,9 @@ void SnakeConsoleView::SnakeMainLoop() {
 }
 
 void SnakeConsoleView::Rendering() {
-  if (data_->game_status == GameState::kStart) {
+  if (data_->game_status == GameState_t::kStart) {
     StartGameRendering();
-  } else if (data_->game_status == GameState::kPause) {
+  } else if (data_->game_status == GameState_t::kPause) {
     PauseRendering(data_->level, data_->curr_score);
   } else {
     GameRendering();
@@ -44,7 +44,7 @@ void SnakeConsoleView::Rendering() {
 void SnakeConsoleView::ModelConnect() {
   controller_->UpdateModelData(action_);
   data_ = &controller_->GetModelData();
-  action_ = UserAction::kNoSig;
+  action_ = UserAction_t::kNoSig;
 }
 
 void SnakeConsoleView::GameRendering() {

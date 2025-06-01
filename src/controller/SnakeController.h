@@ -2,7 +2,7 @@
 #ifndef CONTROLLER_SNAKECONTROLLER_H_
 #define CONTROLLER_SNAKECONTROLLER_H_
 
-#include "../brick_game/snake/SnakeModel.h"
+#include "../brick_game/snake/snake_back.h"
 
 namespace s21 {
 
@@ -11,7 +11,7 @@ class SnakeController {
   explicit SnakeController(SnakeModel *model) : model_(model) {}
   ~SnakeController() = default;
 
-  void UpdateModelData(UserAction action = UserAction::kUp) {
+  void UpdateModelData(UserAction_t action = UserAction_t::kUp) {
     model_->UpdateData(action);
   }
 

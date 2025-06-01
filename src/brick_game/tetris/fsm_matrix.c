@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
-// UserAction player_input(int input) {
-//   UserAction action = 0;
+// UserAction_t player_input(int input) {
+//   UserAction_t action = 0;
 //   switch (input) {
 //     case KEY_LEFT:
 //       action = kLeft;
@@ -44,6 +44,7 @@
 void init_tetris_model(TetrisModel **state) {
   (*state) = (TetrisModel *)s21_malloc(1 * sizeof(TetrisModel));
   init_tetris_map(&((*state)->model));
+  get_set_current_map(*state);
 }
 
 void SpawnNewTetromino(TetrisModel *state) {
@@ -107,16 +108,13 @@ void StartGame(TetrisModel *state) {
   // fprintf(stdout, "\n3\n");
 }
 
-void TetrisUpdateModelData(TetrisModel *state, UserAction act) {
+void TetrisUpdateModelData(TetrisModel *state, UserAction_t act) {
   uint64_t curr_time = state->model->last_moving_time_;
   if (state->t_game_status != kPause) {
     curr_time = GetCurrTime();
   }
 
-  Action func = kTetrisActionTable[(int)(state->t_game_status)][(int)(act)];
-  if (func) {
-    (*func)(state);
-  }
+  userInput(act, true);
 
   if (state->t_game_status == kMoving) {
     if (curr_time - state->model->last_moving_time_ >
@@ -133,6 +131,28 @@ void TetrisUpdateModelData(TetrisModel *state, UserAction act) {
   }
 }
 
+void userInput(UserAction_t action, bool hold) {
+  if (hold) {
+    TetrisModel *state = get_set_current_map(NULL);
+    Action func = kTetrisActionTable[(int)(state->t_game_status)][(int)(action)];
+    if (func) {
+      (*func)(state);
+    }
+  }
+}
+
+TetrisModel *get_set_current_map(TetrisModel *state) {
+  static TetrisModel *state_;
+  if (state != NULL) {
+    state_ = state;
+  }
+  return state_;
+}
+
+GameInfo_t updateCurrentState() {
+  TetrisModel *state = get_set_current_map(NULL);
+  return *state->model->info;
+}
 // void game_loop_2() {
 //   bool is_game = true;
 //   TetrisModel state = {};
@@ -170,7 +190,7 @@ void TetrisUpdateModelData(TetrisModel *state, UserAction act) {
 //   int input = 0;
 //   if (kbhit()) {
 //     input = getch();
-//     UserAction t = player_input(input);
+//     UserAction_t t = player_input(input);
 //     userInput(t, true);
 //     if (t == Down) result = 1;
 //     clear();

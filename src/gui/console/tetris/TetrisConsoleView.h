@@ -13,7 +13,7 @@ class TetrisConsoleView : public BaseView {
   void Start() override;
 
  private:
-  UserAction t_action_;
+  UserAction_t t_action_;
 
   TetrisModel *t_data_;
   TetrisController *controller_;

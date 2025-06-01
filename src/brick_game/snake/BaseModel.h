@@ -9,7 +9,8 @@
 #include <random>
 #include <string>
 
-#include "Constants.h"
+#include "../common/common.h"
+
 namespace s21 {
 
 class BaseModel {

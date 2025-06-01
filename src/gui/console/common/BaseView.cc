@@ -85,33 +85,33 @@ void BaseView::DrawBox(int topLeftY, int topLeftX, int bottomRightY,
   mvaddch(bottomRightY, bottomRightX, ACS_LRCORNER);
 }
 
-UserAction BaseView::GetAction() {
-  UserAction action = UserAction::kNoSig;
+UserAction_t BaseView::GetAction() {
+  UserAction_t action = UserAction_t::kNoSig;
   int key = getch();
   switch (key) {
     case KEY_LEFT:
-      action = UserAction::kLeft;
+      action = UserAction_t::kLeft;
       break;
     case KEY_RIGHT:
-      action = UserAction::kRight;
+      action = UserAction_t::kRight;
       break;
     case KEY_UP:
-      action = UserAction::kUp;
+      action = UserAction_t::kUp;
       break;
     case KEY_DOWN:
-      action = UserAction::kDown;
+      action = UserAction_t::kDown;
       break;
     case 13:  // Enter
-      action = UserAction::kEnterBtn;
+      action = UserAction_t::kEnterBtn;
       break;
     case 9:  // Left tab
-      action = UserAction::kTabBtn;
+      action = UserAction_t::kTabBtn;
       break;
     case 32:  // Space
-      action = UserAction::kSpaceBtn;
+      action = UserAction_t::kSpaceBtn;
       break;
     case 27:  // ESC key
-      action = UserAction::kEscBtn;
+      action = UserAction_t::kEscBtn;
       break;
     default:
       break;

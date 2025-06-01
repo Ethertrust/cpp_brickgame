@@ -60,7 +60,7 @@ class View : public QMainWindow {
   QTimer *m_timer_;
   Ui::View *ui_;
   CurrentGame current_game_{};
-  UserAction action_{};
+  UserAction_t action_{};
   SnakeGameData *s_data_;
   TetrisModel *t_data_;
   SnakeController *snake_controller_;

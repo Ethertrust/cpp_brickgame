@@ -9,7 +9,7 @@ View::View(QWidget *parent)
     : QMainWindow(parent),
       ui_(new Ui::View),
       current_game_(CurrentGame::kNone),
-      action_(UserAction::kNoSig),
+      action_(UserAction_t::kNoSig),
       s_data_(nullptr),
       t_data_(nullptr) {
   ui_->setupUi(this);
@@ -33,28 +33,28 @@ void View::keyPressEvent(QKeyEvent *event) {
   int key = event->key();
   switch (key) {
     case Qt::Key_Left:
-      action_ = UserAction::kLeft;
+      action_ = UserAction_t::kLeft;
       break;
     case Qt::Key_Right:
-      action_ = UserAction::kRight;
+      action_ = UserAction_t::kRight;
       break;
     case Qt::Key_Up:
-      action_ = UserAction::kUp;
+      action_ = UserAction_t::kUp;
       break;
     case Qt::Key_Down:
-      action_ = UserAction::kDown;
+      action_ = UserAction_t::kDown;
       break;
     case Qt::Key_Enter:
-      action_ = UserAction::kEnterBtn;
+      action_ = UserAction_t::kEnterBtn;
       break;
     case Qt::Key_Tab:
-      action_ = UserAction::kTabBtn;
+      action_ = UserAction_t::kTabBtn;
       break;
     case Qt::Key_Space:
-      action_ = UserAction::kSpaceBtn;
+      action_ = UserAction_t::kSpaceBtn;
       break;
     case Qt::Key_Escape:
-      action_ = UserAction::kEscBtn;
+      action_ = UserAction_t::kEscBtn;
       break;
     default:
       break;
@@ -64,11 +64,11 @@ void View::keyPressEvent(QKeyEvent *event) {
 void View::paintEvent(QPaintEvent *event) {
   QWidget::paintEvent(event);
   if (current_game_ == CurrentGame::kSnake) {
-    if (s_data_->game_status != GameState::kGameOver &&
-        s_data_->game_status != GameState::kCollide) {
-      if (s_data_->game_status == GameState::kStart) {
+    if (s_data_->game_status != GameState_t::kGameOver &&
+        s_data_->game_status != GameState_t::kCollide) {
+      if (s_data_->game_status == GameState_t::kStart) {
         StartWindowRendering(ui_->SnakeInfoLabel);
-      } else if (s_data_->game_status == GameState::kPause) {
+      } else if (s_data_->game_status == GameState_t::kPause) {
         PauseWindowRendering(ui_->SnakeInfoLabel);
       } else {
         ui_->SnakeInfoLabel->setText("");
@@ -173,12 +173,12 @@ void View::on_closeGame_clicked() {
 void View::UpdateSnakeModel() {
   snake_controller_->UpdateModelData(action_);
   s_data_ = &snake_controller_->GetModelData();
-  action_ = UserAction::kNoSig;
+  action_ = UserAction_t::kNoSig;
   ui_->CurrScore->setText(QString::number(s_data_->curr_score));
   ui_->CurrLevel->setText(QString::number(s_data_->level));
   ui_->BestScore->setText(QString::number(s_data_->best_score));
-  if (s_data_->game_status == GameState::kGameOver ||
-      s_data_->game_status == GameState::kGameOver) {
+  if (s_data_->game_status == GameState_t::kGameOver ||
+      s_data_->game_status == GameState_t::kGameOver) {
     m_timer_->stop();
   }
 }
@@ -187,7 +187,7 @@ void View::UpdateTetrisModel() {
   tetris_controller_->UpdateModelData(static_cast<int>(action_));
   // std::cout << 1;
   t_data_ = &tetris_controller_->GetModelData();
-  action_ = static_cast<UserAction>(static_cast<int>(kNoSig));
+  action_ = static_cast<UserAction_t>(static_cast<int>(kNoSig));
   ui_->tetris_curr_score->setText(QString::number(t_data_->model->info->score));
   ui_->tetris_curr_level->setText(QString::number(t_data_->model->info->level));
   ui_->tetris_best_score->setText(

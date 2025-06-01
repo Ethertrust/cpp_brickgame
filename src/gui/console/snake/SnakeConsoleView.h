@@ -23,7 +23,7 @@ class SnakeConsoleView : public BaseView {
   void ModelConnect();
   void GameRendering();
 
-  UserAction action_{};
+  UserAction_t action_{};
   SnakeGameData *data_;
   SnakeController *controller_;
 };

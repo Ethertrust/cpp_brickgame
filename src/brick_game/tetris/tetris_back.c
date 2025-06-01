@@ -10,37 +10,6 @@
  */
 #include "tetris_back.h"
 
-// void userInput(UserAction action, bool hold) {
-//   if (hold) {
-//     Model *state = get_set_current_map(NULL);
-//     switch (action) {
-//       case kSpaceBtn:
-//         break;
-//       case kEnterBtn:
-//         break;
-//       case kEscBtn:
-//         break;
-//       case kTabBtn:
-//         break;
-//       case kLeft:
-//         try_left(state);
-//         break;
-//       case kRight:
-//         try_right(state);
-//         break;
-//       case kDown:
-//         while (!try_down(state))
-//           ;  //  try_down(state);
-//         break;
-//       case kUp:
-//         rotate_block(state);
-//         break;
-//       default:
-//         break;
-//     }
-//   }
-// }
-
 void UpdateLevel(Model *state) {
   if (state->info->level < 10 && state->info->score > 600) {
     state->info->level = state->info->score / 600;
@@ -52,11 +21,6 @@ uint64_t GetCurrTime() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   return (uint64_t)(tv.tv_sec) * 1000 + tv.tv_usec / 1000;
-}
-
-GameInfo_t updateCurrentState() {
-  Model *state = get_set_current_map(NULL);
-  return *state->info;
 }
 
 void choose_blstate(int **buf, block_type bt, position pos, int spawn_pos_x) {
@@ -138,7 +102,6 @@ void init_tetris_map(Model **state) {
   (*state)->info->next = NULL;
   (*state)->next_block = get_random_block();
   (*state)->block = get_random_block();
-  get_set_current_map(*state);
 }
 
 void clear_tetris(Model *state) {
@@ -427,13 +390,7 @@ void set_new_level(Model *state) {
   state->info->level = result;
 }
 
-Model *get_set_current_map(Model *state) {
-  static Model *state_;
-  if (state != NULL) {
-    state_ = state;
-  }
-  return state_;
-}
+
 
 void CastCoords(TCoordinates *Coordinates, Model *model) {
   int j = 0;

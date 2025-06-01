@@ -29,6 +29,7 @@
 #define tWindowWidth 22
 #define tWindowHeight 22
 
+#include "../common/common.h"
 #include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -71,7 +72,7 @@ struct TCoordinates {
   int y;
 };
 
-extern "C" {
+// extern "C" {
 #else
 // C-часть (только данные)
 typedef struct {
@@ -80,30 +81,9 @@ typedef struct {
 } TCoordinates;
 #endif
 
-#ifdef __cplusplus
-}  // extern "C"
-#endif
-
-/**
- * @brief Struct with main game info
- *
- * @param field Main tetris map
- * @param next Don`t use in tetris but need for other games
- * @param score Contains current score
- * @param high_score Contains best score of all games
- * @param level Contains difficult of game
- * @param speed not used in tetris
- * @param pause
- */
-typedef struct {
-  int** field;
-  int** next;
-  int score;
-  int high_score;
-  int level;
-  int speed;
-  int pause;
-} GameInfo_t;
+// #ifdef __cplusplus
+// }  // extern "C"
+// #endif
 
 /**
  * @brief Contains 2 point of Rectangle shape
@@ -133,24 +113,9 @@ typedef struct {
   uint64_t curr_delay_;
 } Model;
 
-// /**
-//  * @brief make action from user input
-//  *
-//  * @param action current player action
-//  * @param hold contain active user hold
-//  */
-// void userInput(UserAction action, bool hold);
-
 void UpdateLevel(Model* state);
 
 uint64_t GetCurrTime();
-
-/**
- * @brief
- *
- * @return current game state
- */
-GameInfo_t updateCurrentState();
 
 /**
  * @brief moves active piece in left if is no obstacle
@@ -222,12 +187,29 @@ void set_new_highscore(Model* state);
  */
 void set_new_level(Model* state);
 
-/**
- * @brief set new game state or return current game state if *state == NULL
- * @param state current game state
- * @return current game state
- */
-Model* get_set_current_map(Model* state);
+// /**
+//  * @brief Enum with possible user Action
+//  *
+//  */
+// typedef enum {
+//   kNoSig,
+//   kLeft,
+//   kRight,
+//   kDown,
+//   kUp,
+//   kSpaceBtn,
+//   kEnterBtn,
+//   kEscBtn,
+//   kTabBtn
+// } UserAction_t;
+
+// /**
+//  * @brief make action from user input
+//  *
+//  * @param action current player action
+//  * @param hold contain active user hold
+//  */
+// void userInput(UserAction_t action, bool hold);
 
 /**
  * @brief chooses block state
