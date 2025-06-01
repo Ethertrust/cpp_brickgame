@@ -61,7 +61,7 @@ class View : public QMainWindow {
   Ui::View *ui_;
   CurrentGame current_game_{};
   UserAction_t action_{};
-  SnakeGameData *s_data_;
+  SnakeModel *s_data_;
   TetrisModel *t_data_;
   SnakeController *snake_controller_;
   TetrisController *tetris_controller_;

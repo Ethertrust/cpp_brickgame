@@ -10,27 +10,27 @@
 #define tWindowHeight 21
 // #include <stdint.h>
 
-/**
- * @brief Enum with possible game states
- *
- */
-typedef enum { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver } GameState_t;
+// /**
+//  * @brief Enum with possible game states
+//  *
+//  */
+// typedef enum { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver } GameState_t;
 
-/**
- * @brief Enum with possible user Action
- *
- */
-typedef enum {
-  kNoSig,
-  kLeft,
-  kRight,
-  kDown,
-  kUp,
-  kSpaceBtn,
-  kEnterBtn,
-  kEscBtn,
-  kTabBtn
-} UserAction_t;
+// /**
+//  * @brief Enum with possible user Action
+//  *
+//  */
+// typedef enum {
+//   kNoSig,
+//   kLeft,
+//   kRight,
+//   kDown,
+//   kUp,
+//   kSpaceBtn,
+//   kEnterBtn,
+//   kEscBtn,
+//   kTabBtn
+// } UserAction_t;
 
 /**
  * @brief enum with all block types of tetris
@@ -45,13 +45,6 @@ typedef enum block_type {
   RL_block,
   RZ_block
 } block_type;
-
-/**
- * @brief
- *
- * @return current game state
- */
-GameInfo_t updateCurrentState();
 
 /**
  * @brief enum with all types of game cell state
@@ -196,7 +189,12 @@ extern "C" {
 void clear_tetris(Model* state);
 void TetrisUpdateModelData(TetrisModel* state, UserAction_t act);
 void init_tetris_model(TetrisModel** state);
-void CastCoords(TCoordinates* Coordinates, Model* model);
+void CastCoords(TCoordinates* Coordinates, Model* model);/**
+ * @brief
+ *
+ * @return current game state
+ */
+GameInfo_t updateCurrentState();
 // int c_library_calculate(float value);
 
 #ifdef __cplusplus

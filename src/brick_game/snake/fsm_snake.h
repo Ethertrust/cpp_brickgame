@@ -1,74 +1,64 @@
 // Copyright 2025 shericen
-#ifndef BRICK_GAME_SNAKE_SNAKEBACK_H_
-#define BRICK_GAME_SNAKE_SNAKEBACK_H_
+#ifndef BRICK_GAME_SNAKE_BACKSNAKE_H_
+#define BRICK_GAME_SNAKE_BACKSNAKE_H_
 
 #include <fstream>
 #include <iostream>
 #include <random>
 #include <vector>
 
-#include "../snake/BaseModel.h"
-
-struct Coordinates {
-  Coordinates() : x(0), y(0) {}
-  Coordinates(int x_, int y_) : x(x_), y(y_) {}
-  bool operator==(const Coordinates& other) const {
-    return (x == other.x && y == other.y);
-  }
-  int x;
-  int y;
-};
+#include "back_snake.h"
 
 namespace s21 {
 
-enum class Direction { kUp, kDown, kRight, kLeft };
+// enum class GameState_t { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver };
 
-enum class GameState_t { kStart, kSpawn, kMoving, kCollide, kPause, kGameOver };
+// struct SnakeGameData {
+//   Coordinates fruit_coord;
+//   std::vector<Coordinates> snake_coord;
+//   Direction direction;
+//   bool is_victory;
+//   GameState_t game_status;
+//   int curr_score;
+//   int best_score;
+//   int level;
 
-struct SnakeGameData {
-  Coordinates fruit_coord;
-  std::vector<Coordinates> snake_coord;
-  Direction direction;
-  bool is_victory;
-  GameState_t game_status;
-  int curr_score;
-  int best_score;
-  int level;
+//   bool is_modified;
 
-  bool is_modified;
+//   SnakeGameData()
+//       : fruit_coord(),
+//         snake_coord(),
+//         direction(Direction::kUp),
+//         is_victory(false),
+//         game_status(GameState_t::kStart),
+//         curr_score(0),
+//         best_score(0),
+//         level(1),
+//         is_modified(true) {}
 
-  SnakeGameData()
-      : fruit_coord(),
-        snake_coord(),
-        direction(Direction::kUp),
-        is_victory(false),
-        game_status(GameState_t::kStart),
-        curr_score(0),
-        best_score(0),
-        level(1),
-        is_modified(true) {}
+//   bool operator==(const SnakeGameData& other) const {
+//     return curr_score == other.curr_score && game_status == other.game_status &&
+//            fruit_coord == other.fruit_coord && snake_coord == other.snake_coord;
+//   }
+//   bool operator!=(const SnakeGameData& other) const {
+//     return !(*this == other);
+//   }
+// };
 
-  bool operator==(const SnakeGameData& other) const {
-    return curr_score == other.curr_score && game_status == other.game_status &&
-           fruit_coord == other.fruit_coord && snake_coord == other.snake_coord;
-  }
-  bool operator!=(const SnakeGameData& other) const {
-    return !(*this == other);
-  }
-};
-
-class SnakeModel : public BaseModel {
+class SnakeModel : public Model {
  public:
-  SnakeModel();
+  SnakeModel() : game_status(GameState_t::kStart),
+        direction(Direction::kUp) {}
   ~SnakeModel();
-
-  void UpdateData(UserAction_t action);
-
-  void SetGameDataDefault();
-  SnakeGameData& GetModelData();
 
   using Action = void (SnakeModel::*)();
 
+  void UpdateData(UserAction_t action);
+  // void SetGameDataDefault();
+  SnakeModel& GetModelData();
+
+  GameState_t game_status;
+  Direction direction;
   const Action kSnakeActionTable[6][9] = {
       // kStart
       {nullptr, nullptr, nullptr, nullptr, nullptr, &SnakeModel::StartGame,
@@ -95,21 +85,10 @@ class SnakeModel : public BaseModel {
        &SnakeModel::ExitGame, &SnakeModel::ExitGame, &SnakeModel::ExitGame,
        &SnakeModel::ExitGame, &SnakeModel::ExitGame, &SnakeModel::ExitGame}};
 
-  // for test
-  void UpdateFruitPos(int x, int y);
-  void SetGameDataDefault(int score);
-
  private:
-  SnakeGameData s_data_;
-  uint64_t last_moving_time_{};
-  uint64_t curr_time_{};
-  uint64_t curr_delay_{};
+  // SnakeGameData s_data_;
 
-  void UpdateFruitPos();
   void MoveSnake();
-  void CheckSnakeLife();
-  void CheckSnakeEating();
-
   // FSM ACTION METHODS
   void MoveHeadLeft();
   void MoveHeadRight();
@@ -126,4 +105,4 @@ class SnakeModel : public BaseModel {
 
 }  // namespace s21
 
-#endif  // BRICK_GAME_SNAKE_SNAKEBACK_H_
+#endif  // BRICK_GAME_SNAKE_BACKSNAKE_H_

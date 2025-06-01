@@ -1,22 +1,22 @@
-// Copyright 2025 shericen
+// Copyright 2025 karstarl
 #ifndef CONTROLLER_SNAKECONTROLLER_H_
 #define CONTROLLER_SNAKECONTROLLER_H_
 
-#include "../brick_game/snake/snake_back.h"
+#include "../brick_game/snake/fsm_snake.h"
 
 namespace s21 {
 
 class SnakeController {
  public:
-  explicit SnakeController(SnakeModel *model) : model_(model) {}
+  explicit SnakeController() {model_ = new SnakeModel();}
   ~SnakeController() = default;
 
   void UpdateModelData(UserAction_t action = UserAction_t::kUp) {
     model_->UpdateData(action);
   }
 
-  void SetModelDataDefault() { model_->SetGameDataDefault(); }
-  SnakeGameData &GetModelData() { return model_->GetModelData(); }
+  void SetModelDataDefault() { model_->SetGameDataDefault(model_->LoadScore(FILE_SCORE)); }
+  SnakeModel &GetModelData() { return model_->GetModelData(); }
 
  private:
   SnakeModel *model_;

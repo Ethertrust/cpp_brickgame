@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  *
  */
-#include "tetris_back.h"
+#include "back_tetris.h"
 
 void UpdateLevel(Model *state) {
   if (state->info->level < 10 && state->info->score > 600) {
@@ -331,7 +331,7 @@ void active_to_block(Model *state) {
 
 void set_new_highscore(Model *state) {
   if (mkdir(GAME_INFO_DIR, 0777)) {
-    printf("Папка '%s' создана.\n", GAME_INFO_DIR);
+    // printf("Папка '%s' создана.\n", GAME_INFO_DIR);
   } else {
     switch (errno) {
       case EEXIST:

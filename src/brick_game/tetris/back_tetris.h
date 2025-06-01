@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef TETRIS_V2
-#define TETRIS_V2
+#ifndef BRICK_GAME_TETRIS_BACKTETRIS_H_
+#define BRICK_GAME_TETRIS_BACKTETRIS_H_
 // cli
 #define WINDOW_WIDTH 10
 #define WINDOW_HEIGHT 21
@@ -296,4 +296,4 @@ static const int block_state[7][4][16] = {
      {0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {2, 0, 0, 0, 2, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0}}};
 
-#endif
+#endif //BRICK_GAME_TETRIS_BACKTETRIS_H_

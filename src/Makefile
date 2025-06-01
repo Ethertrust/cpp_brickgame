@@ -11,7 +11,7 @@ GCO := -fprofile-arcs -ftest-coverage -O0
 DIR_GAME_INFO := game_info
 DIR_BACK_TETRIS := brick_game/tetris
 DIR_BACK_SNAKE := brick_game/snake
-DIR_BACK := $(DIR_BACK_SNAKE) $(DIR_BACK_TETRIS)
+# DIR_BACK := $(DIR_BACK_SNAKE) $(DIR_BACK_TETRIS)
 BUILD_DIR := ../build
 IMAGE_DIR := images
 SRC_DIR := .
@@ -31,16 +31,16 @@ LIBRARY_BACK_SNAKE := $(patsubst %.cc,%.o,$(wildcard $(DIR_BACK_SNAKE)/*.cc))
 TEST_SOURCES :=  tests/snake_test.cc
 
 
-GCOV_SOURCES := brick_game/snake/BaseModel.cc \
-				brick_game/snake/SnakeModel.cc \				
-				brick_game/tetris/SnakeModel.cc \
+# GCOV_SOURCES := brick_game/snake/BaseModel.cc \
+# 				brick_game/snake/SnakeModel.cc \				
+# 				brick_game/tetris/SnakeModel.cc 
 
 # Targets
 .PHONY: all install uninstall clean dvi dist test
 
 all: install test
 
-install: libbrick_game_tetris libbrick_game_snake
+install: libbrick_game_tetris 
 	mkdir -p $(DIR_GAME_INFO)
 	mkdir -p $(BUILD_DIR)
 	cp -rf $(IMAGE_DIR) $(BUILD_DIR)

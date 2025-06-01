@@ -36,19 +36,19 @@ include_directories(
 )
 
 # Общие исходные файлы
-set(BRICK_GAME_LIB ${CMAKE_CURRENT_SOURCE_DIR}/static_L/tetris_back.a)
-set(BRICK_GAME_LIB ${CMAKE_CURRENT_SOURCE_DIR}/static_L/snake_back.a )
-# set(COMMON_SOURCES
-#     brick_game/snake/SnakeModel.cc
-#     brick_game/snake/SnakeModel.h
-#     # brick_game/tetris/TetrisModel.cc
-#     # brick_game/tetris/TetrisModel.h
-#     # brick_game/tetris/Tetromino.h
-#     # brick_game/tetris/Tetromino.cc
-#     brick_game/common/Constants.h
-#     brick_game/common/BaseModel.h
-#     brick_game/common/BaseModel.cc
-# )
+set(BRICK_GAME_TETRIS_LIB ${CMAKE_CURRENT_SOURCE_DIR}/static_L/tetris_back.a)
+# set(BRICK_GAME_SNAKE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/static_L/snake_back.a )
+set(COMMON_SOURCES
+    brick_game/snake/fsm_snake.cc
+    brick_game/snake/fsm_snake.h
+    # brick_game/tetris/TetrisModel.cc
+    # brick_game/tetris/TetrisModel.h
+    # brick_game/tetris/Tetromino.h
+    # brick_game/tetris/Tetromino.cc
+    brick_game/common/common.h
+    brick_game/snake/back_snake.h
+    brick_game/snake/back_snake.cc
+)
 
 # # Консольное приложение
 # add_executable(consoleBrickGame
@@ -69,7 +69,7 @@ set(BRICK_GAME_LIB ${CMAKE_CURRENT_SOURCE_DIR}/static_L/snake_back.a )
 
 # Десктопное приложение
 add_executable(desktopBrickGame
-    # ${COMMON_SOURCES}
+    ${COMMON_SOURCES}
     controller/SnakeController.h
     controller/TetrisController.h
     gui/desktop/snake/main.cc
@@ -77,7 +77,7 @@ add_executable(desktopBrickGame
     gui/desktop/snake/View.h
 )
 
-target_link_libraries(desktopBrickGame PRIVATE ${BRICK_GAME_LIB} Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(desktopBrickGame PRIVATE ${BRICK_GAME_TETRIS_LIB}  Qt6::Core Qt6::Gui Qt6::Widgets) #$(BRICK_GAME_SNAKE_LIB)
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(desktopBrickGame)

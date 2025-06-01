@@ -1,7 +1,7 @@
-#ifndef FSM_MATRIX
-#define FSM_MATRIX
+#ifndef BRICK_GAME_TETRIS_FSMETRIS_H_
+#define BRICK_GAME_TETRIS_FSMETRIS_H_
 
-#include "tetris_back.h"
+#include "back_tetris.h"
 
 /**
  * @brief struct with all info for game map
@@ -64,4 +64,4 @@ const Action kTetrisActionTable[6][9] = {
     {ExitGame, ExitGame, ExitGame, ExitGame, ExitGame, ExitGame, ExitGame,
      ExitGame, ExitGame}};
 
-#endif
+#endif //BRICK_GAME_TETRIS_FSMETRIS_H_

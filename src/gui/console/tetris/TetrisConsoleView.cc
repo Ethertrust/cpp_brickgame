@@ -22,9 +22,9 @@ void TetrisConsoleView::Start() {
 void TetrisConsoleView::TetrisMainLoop() {
   while (t_data_->t_game_status != GameState_t::kGameOver &&
          t_data_->t_game_status != GameState_t::kGameOver) {
-    if (t_data_->is_modified) {
+    // if (t_data_->is_modified) {
       Rendering();
-    }
+    // }
 
     usleep(10 * 1000);
 

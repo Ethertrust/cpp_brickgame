@@ -20,9 +20,9 @@ void SnakeConsoleView::Start() {
 
 void SnakeConsoleView::SnakeMainLoop() {
   while (data_->game_status != GameState_t::kGameOver) {
-    if (data_->is_modified) {
+    // if (data_->is_modified) {
       Rendering();
-    }
+    // }
 
     usleep(10 * 1000);  // Приостановка на 10 миллисекунд
 
