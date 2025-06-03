@@ -13,7 +13,7 @@ void SnakeConsoleView::Start() {
   SnakeMainLoop();
   if (data_->game_status == GameState_t::kGameOver ||
       data_->game_status == GameState_t::kGameOver) {
-    GameResultRendering(data_->is_victory, data_->best_score,
+    GameResultRendering(data_->GetIsVictory(), data_->best_score,
                         data_->curr_score);
   }
 }
@@ -51,11 +51,11 @@ void SnakeConsoleView::GameRendering() {
   clear();
   // Fruit
   attron(COLOR_PAIR(1));
-  mvprintw(data_->fruit_coord.y + 1, data_->fruit_coord.x + 1, "%c", ACS_PI);
+  mvprintw(data_->GetFruitY() + 1, data_->GetFruitX() + 1, "%c", ACS_PI);
   attroff(COLOR_PAIR(1));
   // Snake
   attron(COLOR_PAIR(2));
-  for (const auto& i : data_->snake_coord) {
+  for (const auto& i : data_->GetSnakeCoords() ) {
     mvprintw(i.y + 1, i.x + 1, "%c", 'S');
   }
   attroff(COLOR_PAIR(2));

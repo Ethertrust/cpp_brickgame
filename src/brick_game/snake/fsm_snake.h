@@ -47,18 +47,20 @@ namespace s21 {
 
 class SnakeModel : public Model {
  public:
-  SnakeModel() : game_status(GameState_t::kStart),
-        direction(Direction::kUp) {}
-  ~SnakeModel();
-
-  using Action = void (SnakeModel::*)();
+//   SnakeModel() { }
+//   ~SnakeModel();
 
   void UpdateData(UserAction_t action);
   // void SetGameDataDefault();
   SnakeModel& GetModelData();
+  const GameState_t& GetGameStatus() {return game_status;};
+  const Direction& GetDirection() {return direction;};
 
-  GameState_t game_status;
-  Direction direction;
+ private:
+  // SnakeGameData s_data_;
+  Direction direction = Direction::kUp;
+  GameState_t game_status = GameState_t::kStart;
+  using Action = void (SnakeModel::*)();
   const Action kSnakeActionTable[6][9] = {
       // kStart
       {nullptr, nullptr, nullptr, nullptr, nullptr, &SnakeModel::StartGame,
@@ -84,10 +86,6 @@ class SnakeModel : public Model {
       {&SnakeModel::ExitGame, &SnakeModel::ExitGame, &SnakeModel::ExitGame,
        &SnakeModel::ExitGame, &SnakeModel::ExitGame, &SnakeModel::ExitGame,
        &SnakeModel::ExitGame, &SnakeModel::ExitGame, &SnakeModel::ExitGame}};
-
- private:
-  // SnakeGameData s_data_;
-
   void MoveSnake();
   // FSM ACTION METHODS
   void MoveHeadLeft();

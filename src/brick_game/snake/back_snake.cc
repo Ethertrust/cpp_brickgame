@@ -11,6 +11,46 @@
 
 namespace s21 {
 
+Model *get_set_current_map(Model *state) {
+  static Model *state_;
+  if (state != NULL) {
+    state_ = state;
+  }
+  return state_;
+}
+
+GameInfo_t updateCurrentState() {
+  Model *state = get_set_current_map(NULL);
+  // GameInfo_t *temp = new GameInfo_t();
+  state->GetGameInfo();
+  // temp->next = NULL;
+  // temp->score =  state->GetGameInfo().score;
+  // temp->high_score =  state->GetGameInfo().high_score;
+  // temp->level =  state->GetGameInfo().level;
+  // temp->speed =  state->GetGameInfo().speed;
+  // temp->pause =  state->GetGameInfo().pause;
+  // for (int i = 0; i < GameSizes::kFieldHeight; ++i)
+  //   for (int j = 0; j < GameSizes::kFieldWidth; ++j)
+  //       temp->field[i][j] =  state->GetGameInfo().field[i][j];
+  // std::cout << temp->level;
+  return  state->GetGameInfo();
+}
+
+Model::Model() : is_victory(false) {
+    info = new GameInfo_t();
+    info->high_score = LoadScore(FILE_SCORE);
+    SetGameDataDefault(info->score);
+    // get_set_current_map(this);
+}
+
+// GameInfo_t& Model::GetGameInfo() { 
+//   // updateCurrentState();
+//   // *this->info = temp;
+//   // GameInfo_t temp = this->updateCurrentState();
+//   this->updateCurrentState();
+//   return *this->info;
+// }
+
 void Model::SetGameDataDefault(int score = 0) {
   curr_delay_ = GameSizes::kIntervalMs[0];
   last_moving_time_ = curr_time_ = GetCurrTime();

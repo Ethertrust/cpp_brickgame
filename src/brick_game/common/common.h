@@ -52,6 +52,32 @@ struct GameInfo_t {
       }
       delete[] field;
   }
+
+  // GameInfo_t(const GameInfo_t& other) {
+  //   for (int i = 0; i < GameSizes::kFieldHeight; ++i)
+  //   for (int j = 0; j < GameSizes::kFieldWidth; ++j)
+  //       field[i][j] = other.field[i][j];
+  //   next = NULL;
+  //   score = other.score;
+  //   high_score = other.high_score;
+  //   level = other.level;
+  //   speed = other.speed;
+  //   pause = other.pause;
+  // }
+
+  // GameInfo_t& operator=(const GameInfo_t& other)// = default; 
+  // {
+  //   for (int i = 0; i < GameSizes::kFieldHeight; ++i)
+  //   for (int j = 0; j < GameSizes::kFieldWidth; ++j)
+  //       field[i][j] = other.field[i][j];
+  //   next = NULL;
+  //   score = other.score;
+  //   high_score = other.high_score;
+  //   level = other.level;
+  //   speed = other.speed;
+  //   pause = other.pause;
+  //   return *this;
+  // }
 };
 
 /**

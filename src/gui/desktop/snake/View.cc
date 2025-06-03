@@ -64,11 +64,11 @@ void View::keyPressEvent(QKeyEvent *event) {
 void View::paintEvent(QPaintEvent *event) {
   QWidget::paintEvent(event);
   if (current_game_ == CurrentGame::kSnake) {
-    if (s_data_->game_status != GameState_t::kGameOver &&
-        s_data_->game_status != GameState_t::kCollide) {
-      if (s_data_->game_status == GameState_t::kStart) {
+    if (s_data_->GetGameStatus() != GameState_t::kGameOver &&
+        s_data_->GetGameStatus() != GameState_t::kCollide) {
+      if (s_data_->GetGameStatus() == GameState_t::kStart) {
         StartWindowRendering(ui_->SnakeInfoLabel);
-      } else if (s_data_->game_status == GameState_t::kPause) {
+      } else if (s_data_->GetGameStatus() == GameState_t::kPause) {
         PauseWindowRendering(ui_->SnakeInfoLabel);
       } else {
         ui_->SnakeInfoLabel->setText("");
@@ -76,7 +76,7 @@ void View::paintEvent(QPaintEvent *event) {
       }
     } else {
       ClearField();
-      GameOver(s_data_->is_victory, s_data_->info->high_score, s_data_->info->score);
+      GameOver(s_data_->GetIsVictory(), s_data_->GetGameInfo().high_score, s_data_->GetGameInfo().score);
     }
   } else if (current_game_ == CurrentGame::kTetris) {
     if (t_data_->t_game_status != kGameOver &&
@@ -174,11 +174,11 @@ void View::UpdateSnakeModel() {
   snake_controller_->UpdateModelData(action_);
   s_data_ = &snake_controller_->GetModelData();
   action_ = UserAction_t::kNoSig;
-  ui_->CurrScore->setText(QString::number(s_data_->info->score));
-  ui_->CurrLevel->setText(QString::number(s_data_->info->level));
-  ui_->BestScore->setText(QString::number(s_data_->info->high_score));
-  if (s_data_->game_status == GameState_t::kGameOver ||
-      s_data_->game_status == GameState_t::kGameOver) {
+  ui_->CurrScore->setText(QString::number(s_data_->GetGameInfo().score));
+  ui_->CurrLevel->setText(QString::number(s_data_->GetGameInfo().level));
+  ui_->BestScore->setText(QString::number(s_data_->GetGameInfo().high_score));
+  if (s_data_->GetGameStatus() == GameState_t::kGameOver ||
+      s_data_->GetGameStatus() == GameState_t::kGameOver) {
     m_timer_->stop();
   }
 }
@@ -202,34 +202,34 @@ void View::SnakeGameRendering() {
   QPainter qp(this);
   QImage apple("images/apple.png");
 
-  QRectF appleRect(s_data_->fruit_coord.x * GameSizes::kDotSize,
-                   s_data_->fruit_coord.y * GameSizes::kDotSize,
+  QRectF appleRect(s_data_->GetFruitX() * GameSizes::kDotSize,
+                   s_data_->GetFruitY() * GameSizes::kDotSize,
                    GameSizes::kDotSize, GameSizes::kDotSize);
   QImage head("images/snake_head3.png");
 
-  QRectF head_rect(s_data_->snake_coord[0].x * GameSizes::kDotSize,
-                   s_data_->snake_coord[0].y * GameSizes::kDotSize,
+  QRectF head_rect(s_data_->GetSnakeCoords() [0].x * GameSizes::kDotSize,
+                   s_data_->GetSnakeCoords() [0].y * GameSizes::kDotSize,
                    GameSizes::kDotSize, GameSizes::kDotSize);
 
   QTransform transform;
   int rot = 0;
-  if (s_data_->direction == Direction::kDown) {
+  if (s_data_->GetDirection() == Direction::kDown) {
     rot = 180;
-  } else if (s_data_->direction != Direction::kUp) {
-    rot = (s_data_->direction == Direction::kLeft ? -90 : 90);
+  } else if (s_data_->GetDirection() != Direction::kUp) {
+    rot = (s_data_->GetDirection() == Direction::kLeft ? -90 : 90);
   }
   head = head.transformed(transform.rotate(rot));
 
   qp.drawImage(appleRect, apple);
 
-  for (std::size_t i = 0; i < s_data_->snake_coord.size(); ++i) {
+  for (std::size_t i = 0; i < s_data_->GetSnakeCoords() .size(); ++i) {
     qp.setBrush(QColor(148, 195, 76));
     qp.setPen(QColor(148, 195, 76));
     if (i == 0) {
       qp.drawImage(head_rect, head);
     } else {
-      qp.drawRect(s_data_->snake_coord[i].x * GameSizes::kDotSize,
-                  s_data_->snake_coord[i].y * GameSizes::kDotSize,
+      qp.drawRect(s_data_->GetSnakeCoords() [i].x * GameSizes::kDotSize,
+                  s_data_->GetSnakeCoords() [i].y * GameSizes::kDotSize,
                   GameSizes::kDotSize - 1, GameSizes::kDotSize - 1);
     }
   }

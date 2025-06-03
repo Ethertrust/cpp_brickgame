@@ -4,6 +4,7 @@
 namespace s21 {
 
 
+
 void SnakeModel::UpdateData(UserAction_t action) {
   // s_data_.is_modified = false;
   // SnakeGameData data_cast = s_data_;
@@ -28,7 +29,9 @@ void SnakeModel::UpdateData(UserAction_t action) {
   // if (s_data_ != data_cast) s_data_.is_modified = true;
 }
 
-SnakeModel& SnakeModel::GetModelData() { return *this; }
+SnakeModel& SnakeModel::GetModelData() { 
+  // updateCurrentState();
+  return *this; }
 
 // void SnakeModel::SetGameDataDefault() {
 //   curr_delay_ = GameSizes::kIntervalMs[0];
