@@ -117,9 +117,9 @@ void View::GameOver(bool is_victory, int level, int score) {
 
 void View::UpdateAll() {
   if (current_game_ == CurrentGame::kSnake) {
-    UpdateSnakeModel();
+    if (snake_controller_) UpdateSnakeModel();
   } else if (current_game_ == CurrentGame::kTetris) {
-    UpdateTetrisModel();
+    if (tetris_controller_) UpdateTetrisModel();
   }
   repaint();
 }
@@ -172,7 +172,7 @@ void View::on_closeGame_clicked() {
 
 void View::UpdateSnakeModel() {
   snake_controller_->UpdateModelData(action_);
-  s_data_ = &snake_controller_->GetModelData();
+  // s_data_ = &snake_controller_->GetModelData();
   action_ = UserAction_t::kNoSig;
   ui_->CurrScore->setText(QString::number(s_data_->GetGameInfo().score));
   ui_->CurrLevel->setText(QString::number(s_data_->GetGameInfo().level));

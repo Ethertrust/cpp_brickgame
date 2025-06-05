@@ -16,7 +16,8 @@ class SnakeController {
   }
 
   void SetModelDataDefault() { model_->SetGameDataDefault(model_->LoadScore(FILE_SCORE)); }
-  SnakeModel &GetModelData() { return model_->GetModelData(); }
+  SnakeModel &GetModelData() { //model_->updateCurrentState();
+    return *model_; }
 
  private:
   SnakeModel *model_;

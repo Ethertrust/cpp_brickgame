@@ -30,17 +30,40 @@ class Model {
  private:
   void UpdateFruitPos();
   bool is_victory;
-  GameInfo_t *info;
+  GameInfo_t *info = nullptr;
   Coordinates fruit_coord;
-
+  
  public:
-  Model();
+  Model() : is_victory(false) {
+    info = new GameInfo_t;
+    info->high_score = LoadScore(FILE_SCORE);
+    SetGameDataDefault(info->score);
+    updateCurrentState();
+    // ref_info = GetGameInfo();
+    // get_set_current_map(this);
+  }
   ~Model() {
     SaveScore(FILE_SCORE);
     snake_coord.clear();
   }
-  GameInfo_t& GetGameInfo() {return *info;};
-  GameInfo_t G_GameInfo() {return *info;};
+  // GameInfo_t &ref_info = GetGameInfo();
+  GameInfo_t& GetGameInfo() { return *info; };
+  bool checkinfoptr() {return info != nullptr;};
+  GameInfo_t updateCurrentState() {
+      GameInfo_t& current = GetGameInfo(); 
+      info->next = nullptr;
+      info->score = current.score;         
+      info->high_score = current.high_score;
+      info->level = current.level;
+      info->speed = current.speed;
+      info->pause = current.pause;
+      for (int i = 0; i < GameSizes::kFieldHeight; ++i)
+        for (int j = 0; j < GameSizes::kFieldWidth; ++j)
+            {info->field[i][j] = current.field[i][j]>0;}
+ 
+    return *info;
+  }
+  // GameInfo_t G_GameInfo() {return *info;};
   const bool& GetIsVictory() {return is_victory;};
   const int& GetFruitX() {return fruit_coord.x;};
   const int& GetFruitY() {return fruit_coord.y;};
@@ -49,7 +72,7 @@ class Model {
   void SaveScore(const std::string &file_name);
   int LoadScore(const std::string &file_name);
   void SetGameDataDefault(int score);
-  GameInfo_t temp;
+  // GameInfo_t temp;
 
  protected:
   std::vector<Coordinates> snake_coord;

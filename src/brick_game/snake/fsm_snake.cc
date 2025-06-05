@@ -25,7 +25,7 @@ void SnakeModel::UpdateData(UserAction_t action) {
       MoveSnake();
     }
   }
-
+  // if (checkinfoptr()) this->updateCurrentState();
   // if (s_data_ != data_cast) s_data_.is_modified = true;
 }
 

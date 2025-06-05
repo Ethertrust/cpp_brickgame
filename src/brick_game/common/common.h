@@ -40,17 +40,18 @@ struct GameInfo_t {
   int pause;
 
   GameInfo_t() {
-        field = new int*[GameSizes::kFieldHeight];  // Выделяем массив указателей
-        for (size_t i = 0; i < GameSizes::kFieldWidth; ++i) {
-            field[i] = new int(i * 10);  // Выделяем память для каждого int
+        field = new int*[GameSizes::kFieldHeight]; 
+        for (size_t i = 0; i < GameSizes::kFieldHeight; ++i) {
+            field[i] = new int[GameSizes::kFieldWidth];  
         }
   }
 
   ~GameInfo_t() {
-      for (size_t i = 0; i < GameSizes::kFieldWidth; ++i) {
-          delete field[i];  // Освобождаем каждый int
+      for (size_t i = 0; i < GameSizes::kFieldHeight; ++i) {
+          delete[] field[i]; 
       }
       delete[] field;
+      field = nullptr;
   }
 
   // GameInfo_t(const GameInfo_t& other) {
@@ -80,12 +81,12 @@ struct GameInfo_t {
   // }
 };
 
-/**
- * @brief
- *
- * @return current game state
- */
-GameInfo_t updateCurrentState();
+// /**
+//  * @brief
+//  *
+//  * @return current game state
+//  */
+// GameInfo_t updateCurrentState();
 
 // typedef struct {
 //   int** field;
