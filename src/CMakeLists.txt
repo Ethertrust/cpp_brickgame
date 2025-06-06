@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(CPP3_BrickGame_v2_0_1 LANGUAGES C CXX)
+project(CPP3_BrickGame_v2_0_1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 

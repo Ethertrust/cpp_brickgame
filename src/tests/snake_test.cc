@@ -10,7 +10,7 @@ class SnakeGameTest : public ::testing::Test {
 };
 
 TEST_F(SnakeGameTest, MoveSnakeUp) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -22,7 +22,7 @@ TEST_F(SnakeGameTest, MoveSnakeUp) {
 }
 
 TEST_F(SnakeGameTest, MoveSnakeLeft) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -34,7 +34,7 @@ TEST_F(SnakeGameTest, MoveSnakeLeft) {
 }
 
 TEST_F(SnakeGameTest, MoveSnakeRight) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -46,7 +46,7 @@ TEST_F(SnakeGameTest, MoveSnakeRight) {
 }
 
 TEST_F(SnakeGameTest, MoveSnakeAround) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -64,7 +64,7 @@ TEST_F(SnakeGameTest, MoveSnakeAround) {
 }
 
 TEST_F(SnakeGameTest, AutoMovingUp) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -80,7 +80,7 @@ TEST_F(SnakeGameTest, AutoMovingUp) {
 }
 
 TEST_F(SnakeGameTest, AutoMovingLeft) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -96,7 +96,7 @@ TEST_F(SnakeGameTest, AutoMovingLeft) {
 }
 
 TEST_F(SnakeGameTest, AutoMovingRight) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -112,7 +112,7 @@ TEST_F(SnakeGameTest, AutoMovingRight) {
 }
 
 TEST_F(SnakeGameTest, AutoMovingDown) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -129,7 +129,7 @@ TEST_F(SnakeGameTest, AutoMovingDown) {
 }
 
 TEST_F(SnakeGameTest, SetAndCancelPauseAndExit) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -145,7 +145,7 @@ TEST_F(SnakeGameTest, SetAndCancelPauseAndExit) {
 }
 
 TEST_F(SnakeGameTest, CollideGameOver) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -158,20 +158,20 @@ TEST_F(SnakeGameTest, CollideGameOver) {
 }
 
 TEST_F(SnakeGameTest, WinGameOver) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kSpawn);
   snake_model_.UpdateData(s21::UserAction_t::kNoSig);
-  snake_model_.SetGameDataDefault(199);
+  snake_model_.SetSnakeDataDefault(199);
   snake_model_.UpdateFruitPos(5, (s21::GameSizes::kFieldHeight / 2) - 1);
   snake_model_.UpdateData(s21::UserAction_t::kUp);
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kGameOver);
 }
 
 TEST_F(SnakeGameTest, MovingRightCollide) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);
@@ -188,7 +188,7 @@ TEST_F(SnakeGameTest, MovingRightCollide) {
 }
 
 TEST_F(SnakeGameTest, EatingAppleAndSnake) {
-  snake_model_.SetGameDataDefault();
+  snake_model_.SetSnakeDataDefault();
   s21::SnakeGameData *snake_game_data_ = &snake_model_.GetModelData();
   EXPECT_EQ(snake_game_data_->GetGameStatus(), s21::GameState_t::kStart);
   snake_model_.UpdateData(s21::UserAction_t::kSpaceBtn);

@@ -10,13 +10,13 @@ class SnakeController {
  public:
   explicit SnakeController() {model_ = new SnakeModel();}
   ~SnakeController() {
-  delete model_;
+    delete model_;
   }
   void UpdateModelData(UserAction_t action = UserAction_t::kUp) {
     model_->UpdateData(action);
   }
 
-  void SetModelDataDefault() { model_->SetGameDataDefault(0); }
+  void SetModelDataDefault() { model_->SetSnakeDataDefault(); }
   SnakeModel &GetModelData() { //model_->updateCurrentState();
     return *model_; }
 

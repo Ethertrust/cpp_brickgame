@@ -48,8 +48,8 @@ namespace s21 {
 class SnakeModel : public Model {
  public:
 //   SnakeModel() { }
-//   ~SnakeModel();
-
+  ~SnakeModel() {};
+  void SetSnakeDataDefault(int score = 0);
   void UpdateData(UserAction_t action);
   // void SetGameDataDefault();
   SnakeModel& GetModelData();

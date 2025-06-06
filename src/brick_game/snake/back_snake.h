@@ -44,7 +44,9 @@ class Model {
   }
   ~Model() {
     SaveScore(FILE_SCORE);
-    snake_coord.clear();
+    // snake_coord.clear();
+    // delete &snake_coord;
+    // delete info;
   }
   // GameInfo_t &ref_info = GetGameInfo();
   GameInfo_t& GetGameInfo() { return *info; };

@@ -161,11 +161,23 @@ void View::on_start_tetris_btn_clicked() {
   m_timer_->start(10);
 }
 
+void View::closeEvent(QCloseEvent *event) {
+  if(tetris_controller_ != nullptr) tetris_controller_->~TetrisController();
+  if(snake_controller_ != nullptr)  snake_controller_->~SnakeController();
+  event->accept();
+}
+
 void View::on_exit_btn_clicked() { close(); }
 
 void View::on_closeGame_clicked() {
-  if(tetris_controller_) tetris_controller_->~TetrisController();
-  if(snake_controller_)  snake_controller_->~SnakeController();
+  if(tetris_controller_) {
+    tetris_controller_->~TetrisController();
+    tetris_controller_= nullptr;
+  }
+  if(snake_controller_) { 
+    snake_controller_->~SnakeController(); 
+    snake_controller_ = nullptr;
+  }
   current_game_ = CurrentGame::kNone;
   ui_->stackedWidget->setCurrentIndex(1);
 }

@@ -4,6 +4,11 @@
 namespace s21 {
 
 
+void SnakeModel::SetSnakeDataDefault(int score) {
+  SetGameDataDefault(score);
+  game_status = GameState_t::kStart;
+  direction = Direction::kUp;
+}
 
 void SnakeModel::UpdateData(UserAction_t action) {
   // s_data_.is_modified = false;

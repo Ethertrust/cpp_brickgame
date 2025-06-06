@@ -51,7 +51,7 @@ struct GameInfo_t {
           delete[] field[i]; 
       }
       delete[] field;
-      field = nullptr;
+      // field = nullptr;
   }
 
   // GameInfo_t(const GameInfo_t& other) {

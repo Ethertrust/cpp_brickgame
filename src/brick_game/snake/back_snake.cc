@@ -57,8 +57,6 @@ void Model::SetGameDataDefault(int score = 0) {
   last_moving_time_ = curr_time_ = GetCurrTime();
   info->score = score;
   info->level = 1;
-  // direction = Direction::kUp;
-  // s_data_.game_status = GameState_t::kMoving;
   snake_coord.clear();
   snake_coord.reserve(200);
 
@@ -145,23 +143,20 @@ void Model::SaveScore(const std::string &file_name) {
   std::ofstream file(file_name);
   if (file.is_open()) {
     file << this->info->high_score;
-    file.close();
   }
+  else {
+    std::ofstream new_file(file_name);
+    if (new_file.is_open()) new_file << this->info->high_score;
+    new_file.close();
+  }
+  file.close();
 }
 
 void Model::LoadScore(const std::string &file_name) {
     std::cerr << "LoadScore вызван!\n";
     std::ifstream file(file_name);
-    if (!(file.is_open())) {
-      std::cerr << "high_score обнулён!\n";
-      std::ofstream new_file(file_name);
-      new_file << 0;
-      new_file.close();
-      this->info->high_score = 0;
-    } else {
-      std::cerr << "high_score добавлен!\n";
-      file >> this->info->high_score;
-    }
+    if ((file.is_open())) file >> this->info->high_score;
+    else this->info->high_score = 0;
     file.close();
 }
 

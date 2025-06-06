@@ -10,6 +10,7 @@
 #include <QString>
 #include <QTimer>
 #include <QWidget>
+#include <QCloseEvent>
 #include <utility>
 
 #include "../../../controller/SnakeController.h"
@@ -48,6 +49,7 @@ class View : public QMainWindow {
  protected:
   void keyPressEvent(QKeyEvent *) override;
   void paintEvent(QPaintEvent *event) override;
+  void closeEvent(QCloseEvent *event) override;
 
  private slots:
   void on_playAgain_clicked();
@@ -63,8 +65,8 @@ class View : public QMainWindow {
   UserAction_t action_{};
   SnakeModel *s_data_;
   TetrisModel *t_data_;
-  SnakeController *snake_controller_;
-  TetrisController *tetris_controller_;
+  SnakeController *snake_controller_ = nullptr;
+  TetrisController *tetris_controller_= nullptr;
 
   void ClearField();
   void GameOver(bool is_victory, int level, int score);
