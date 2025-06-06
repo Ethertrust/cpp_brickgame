@@ -34,42 +34,34 @@ class Model {
   Coordinates fruit_coord;
   
  public:
-  Model() : is_victory(false) {
-    info = new GameInfo_t;
-    LoadScore(FILE_SCORE);
-    SetGameDataDefault(info->score);
-    updateCurrentState();
-    // ref_info = GetGameInfo();
-    // get_set_current_map(this);
-  }
-  ~Model() {
-    SaveScore(FILE_SCORE);
-    // snake_coord.clear();
-    // delete &snake_coord;
-    // delete info;
-  }
+  Model(); 
+  // : is_victory(false) {
+  //   info = new GameInfo_t;
+  //   LoadScore(FILE_SCORE);
+  //   SetGameDataDefault(info->score);
+  //   updateCurrentState();
+  //   // ref_info = GetGameInfo();
+  //   // get_set_current_map(this);
+  // }
+  ~Model(); 
+  // {
+  //   SaveScore(FILE_SCORE);
+  //   // snake_coord.clear();
+  //   // delete &snake_coord;
+  //   // delete info;
+  // }
   // GameInfo_t &ref_info = GetGameInfo();
   GameInfo_t& GetGameInfo() { return *info; };
-  bool checkinfoptr() {return info != nullptr;};
-  GameInfo_t updateCurrentState() {
-      GameInfo_t& current = GetGameInfo(); 
-      info->next = nullptr;
-      info->score = current.score;         
-      info->high_score = current.high_score;
-      info->level = current.level;
-      info->speed = current.speed;
-      info->pause = current.pause;
-      for (int i = 0; i < GameSizes::kFieldHeight; ++i)
-        for (int j = 0; j < GameSizes::kFieldWidth; ++j)
-            {info->field[i][j] = current.field[i][j]>0;}
- 
-    return *info;
-  }
+  const int& GetScore();
+  const int& GetHighScore();
+  const int& GetLevel();
+  bool checkinfoptr();
+  GameInfo_t updateCurrentState();
   // GameInfo_t G_GameInfo() {return *info;};
-  const bool& GetIsVictory() {return is_victory;};
-  const int& GetFruitX() {return fruit_coord.x;};
-  const int& GetFruitY() {return fruit_coord.y;};
-  const std::vector<Coordinates>& GetSnakeCoords() {return snake_coord;};
+  const bool& GetIsVictory();
+  const int& GetFruitX();
+  const int& GetFruitY();
+  const std::vector<Coordinates>& GetSnakeCoords();
   uint64_t GetCurrTime();
   void SaveScore(const std::string &file_name);
   void LoadScore(const std::string &file_name);
@@ -87,7 +79,7 @@ class Model {
   // bool is_modified;
 };
 
-Model *get_set_current_map(Model *state);
+// Model *get_set_current_map(Model *state);
 
 }  // namespace s21
 #endif  // BRICK_GAME_COMMON_BACKSNAKE_H_

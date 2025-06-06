@@ -40,7 +40,7 @@ TEST_SOURCES :=  tests/snake_test.cc
 
 all: install test
 
-install: libbrick_game_tetris 
+install: libbrick_game_tetris libbrick_game_snake
 	mkdir -p $(DIR_GAME_INFO)
 	mkdir -p $(BUILD_DIR)
 	cp -rf $(IMAGE_DIR) $(BUILD_DIR)

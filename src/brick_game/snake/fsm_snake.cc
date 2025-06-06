@@ -3,11 +3,24 @@
 
 namespace s21 {
 
+const GameState_t& SnakeModel::GetGameStatus() {return game_status;}
 
 void SnakeModel::SetSnakeDataDefault(int score) {
   SetGameDataDefault(score);
   game_status = GameState_t::kStart;
   direction = Direction::kUp;
+}
+
+const Direction& SnakeModel::GetDirection() {return direction;}
+
+void SnakeModel::userInput(UserAction_t action, bool hold) {
+  if (hold) {
+    Action func = kSnakeActionTable[static_cast<int>(game_status)]
+                                 [static_cast<int>(action)];
+    if (func) {
+      (this->*func)();
+    }
+  }
 }
 
 void SnakeModel::UpdateData(UserAction_t action) {
@@ -18,12 +31,9 @@ void SnakeModel::UpdateData(UserAction_t action) {
   if (game_status != GameState_t::kPause) {
     curr_time_ = GetCurrTime();
   }
+  
+  userInput(action, true);
 
-  Action func = kSnakeActionTable[static_cast<int>(game_status)]
-                                 [static_cast<int>(action)];
-  if (func) {
-    (this->*func)();
-  }
 
   if (game_status == GameState_t::kMoving) {
     if (curr_time_ - last_moving_time_ > curr_delay_) {

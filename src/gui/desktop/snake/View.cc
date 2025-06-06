@@ -76,7 +76,7 @@ void View::paintEvent(QPaintEvent *event) {
       }
     } else {
       ClearField();
-      GameOver(s_data_->GetIsVictory(), s_data_->GetGameInfo().high_score, s_data_->GetGameInfo().score);
+      GameOver(s_data_->GetIsVictory(), s_data_->GetHighScore(), s_data_->GetScore());
     }
   } else if (current_game_ == CurrentGame::kTetris) {
     if (t_data_->t_game_status != kGameOver &&
@@ -145,7 +145,7 @@ void View::on_start_snake_btn_clicked() {
   // SnakeController s_controller(&s_model);
   snake_controller_ = new SnakeController();
   current_game_ = CurrentGame::kSnake;
-  snake_controller_->SetModelDataDefault();
+  // snake_controller_->SetModelDataDefault();
   s_data_ = &snake_controller_->GetModelData();
   ui_->stackedWidget->setCurrentIndex(2);
   m_timer_->start(10);
@@ -186,9 +186,9 @@ void View::UpdateSnakeModel() {
   snake_controller_->UpdateModelData(action_);
   // s_data_ = &snake_controller_->GetModelData();
   action_ = UserAction_t::kNoSig;
-  ui_->CurrScore->setText(QString::number(s_data_->GetGameInfo().score));
-  ui_->CurrLevel->setText(QString::number(s_data_->GetGameInfo().level));
-  ui_->BestScore->setText(QString::number(s_data_->GetGameInfo().high_score));
+  ui_->CurrScore->setText(QString::number(s_data_->GetScore()));
+  ui_->CurrLevel->setText(QString::number(s_data_->GetLevel()));
+  ui_->BestScore->setText(QString::number(s_data_->GetHighScore()));
   if (s_data_->GetGameStatus() == GameState_t::kGameOver ||
       s_data_->GetGameStatus() == GameState_t::kGameOver) {
     m_timer_->stop();

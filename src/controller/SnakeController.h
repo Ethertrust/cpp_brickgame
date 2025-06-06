@@ -2,7 +2,8 @@
 #ifndef CONTROLLER_SNAKECONTROLLER_H_
 #define CONTROLLER_SNAKECONTROLLER_H_
 
-#include "../brick_game/snake/fsm_snake.h"
+#include "../static_L/snake_back.h"
+// #include "../brick_game/snake/fsm_snake.h"
 
 namespace s21 {
 
@@ -16,9 +17,8 @@ class SnakeController {
     model_->UpdateData(action);
   }
 
-  void SetModelDataDefault() { model_->SetSnakeDataDefault(); }
-  SnakeModel &GetModelData() { //model_->updateCurrentState();
-    return *model_; }
+  void SetModelDataDefault() { model_->SetSnakeDataDefault(0); }
+  SnakeModel &GetModelData() { return *model_; }
 
  private:
   SnakeModel *model_;

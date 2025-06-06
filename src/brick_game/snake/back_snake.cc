@@ -12,13 +12,13 @@
 
 namespace s21 {
 
-Model *get_set_current_map(Model *state) {
-  static Model *state_;
-  if (state != NULL) {
-    state_ = state;
-  }
-  return state_;
-}
+// Model *get_set_current_map(Model *state) {
+//   static Model *state_;
+//   if (state != NULL) {
+//     state_ = state;
+//   }
+//   return state_;
+// }
 
 // GameInfo_t updateCurrentState() {
 //   Model *state = get_set_current_map(NULL);
@@ -52,7 +52,50 @@ Model *get_set_current_map(Model *state) {
 //   return *this->info;
 // }
 
+Model::Model() : is_victory(false) {
+  info = new GameInfo_t;
+  LoadScore(FILE_SCORE);
+  SetGameDataDefault(0);
+  updateCurrentState();
+  // ref_info = GetGameInfo();
+  // get_set_current_map(this);
+  std::cerr << "Model off!\n";
+}
+Model::~Model() {
+  SaveScore(FILE_SCORE);
+  // snake_coord.clear();
+  // delete &snake_coord;
+  // delete info;
+}
+
+bool Model::checkinfoptr() {return info != nullptr;}
+
+GameInfo_t Model::updateCurrentState() {
+  std::cerr << "updateCurrentState on!\n";
+    GameInfo_t& current = GetGameInfo(); 
+    info->next = nullptr;
+    info->score = current.score;         
+    info->high_score = current.high_score;
+    info->level = current.level;
+    info->speed = current.speed;
+    info->pause = current.pause;
+    for (int i = 0; i < GameSizes::kFieldHeight; ++i)
+      for (int j = 0; j < GameSizes::kFieldWidth; ++j)
+          {info->field[i][j] = current.field[i][j]>0;}
+  std::cerr << "updateCurrentState off!\n";
+  return *info;
+}
+
+const bool& Model::GetIsVictory() {return is_victory;}
+const int& Model::GetFruitX() {return fruit_coord.x;}
+const int& Model::GetFruitY() {return fruit_coord.y;}
+const std::vector<Coordinates>& Model::GetSnakeCoords() {return snake_coord;}
+const int& Model::GetScore() { return info->score; }
+const int& Model::GetHighScore() { return info->high_score; }
+const int& Model::GetLevel() { return info->level; }
+
 void Model::SetGameDataDefault(int score = 0) {
+  std::cerr << "SetGameDataDefault on!\n";
   curr_delay_ = GameSizes::kIntervalMs[0];
   last_moving_time_ = curr_time_ = GetCurrTime();
   info->score = score;
@@ -66,6 +109,7 @@ void Model::SetGameDataDefault(int score = 0) {
   snake_coord.push_back({5, GameSizes::kFieldHeight / 2 + 3});
 
   UpdateFruitPos();
+  std::cerr << "SetGameDataDefault off!\n";
 }
 
 void Model::UpdateFruitPos() {
@@ -158,6 +202,7 @@ void Model::LoadScore(const std::string &file_name) {
     if ((file.is_open())) file >> this->info->high_score;
     else this->info->high_score = 0;
     file.close();
+    std::cerr << "LoadScore завершен!\n";
 }
 
 // int Model::LoadScore(const std::string &file_name) {

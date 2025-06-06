@@ -3,7 +3,7 @@
 #define BRICK_GAME_COMMON_COMMON_H_
 #define GAME_INFO_DIR "game_info"
 #ifdef __cplusplus
-
+#include <cstddef>
 // #include <iostream>
 // #include <vector>
 namespace s21 {
