@@ -17,7 +17,6 @@
 #define SPAWN_POS_X 3
 #define SPAWN_POS_Y 0
 #define FILE_SCORE "./game_info/tetris_highscore_list.txt"
-#define GAME_INFO_DIR "game_info"
 #define BAD_ALLOC 1
 #define INTERVALS \
   { 500, 420, 340, 260, 230, 200, 180, 160, 140, 125 }

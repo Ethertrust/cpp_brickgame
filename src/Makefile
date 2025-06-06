@@ -18,7 +18,7 @@ SRC_DIR := .
 EXTENSIONS := cc cpp h c
 DIR_LIBRARY := static_L
 
-RM_RULE := rm -rf test *.dSYM coverage report res *.info *.gcda *.gcno snake_game ../build ../BrickGame_v2-0.tar.gz SnakeScore.txt TetrisScore.txt
+RM_RULE := rm -rf test *.dSYM coverage report res *.info *.gcda *.gcno snake_game ../build ../BrickGame_v2-0.tar.gz ./game_info
 
 # File discovery function
 find_files = $(foreach ext,$(EXTENSIONS),$(wildcard $(1)/*.$(ext))) $(foreach d,$(wildcard $(1)/*),$(call find_files,$(d)))

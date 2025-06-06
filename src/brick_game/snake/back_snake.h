@@ -36,7 +36,7 @@ class Model {
  public:
   Model() : is_victory(false) {
     info = new GameInfo_t;
-    info->high_score = LoadScore(FILE_SCORE);
+    LoadScore(FILE_SCORE);
     SetGameDataDefault(info->score);
     updateCurrentState();
     // ref_info = GetGameInfo();
@@ -70,7 +70,7 @@ class Model {
   const std::vector<Coordinates>& GetSnakeCoords() {return snake_coord;};
   uint64_t GetCurrTime();
   void SaveScore(const std::string &file_name);
-  int LoadScore(const std::string &file_name);
+  void LoadScore(const std::string &file_name);
   void SetGameDataDefault(int score);
   // GameInfo_t temp;
 

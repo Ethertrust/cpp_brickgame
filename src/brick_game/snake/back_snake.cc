@@ -4,6 +4,7 @@
 
 #include <sys/time.h>
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <random>
@@ -140,21 +141,37 @@ uint64_t Model::GetCurrTime() {
 }
 
 void Model::SaveScore(const std::string &file_name) {
+  std::cerr << "SaveScore вызван!\n";
   std::ofstream file(file_name);
   if (file.is_open()) {
-    file << info->high_score;
+    file << this->info->high_score;
     file.close();
   }
 }
 
-int Model::LoadScore(const std::string &file_name) {
-  
-  std::ifstream file(file_name);
-  if (file.is_open()) {
-    file >> this->info->high_score;
+void Model::LoadScore(const std::string &file_name) {
+    std::cerr << "LoadScore вызван!\n";
+    std::ifstream file(file_name);
+    if (!(file.is_open())) {
+      std::cerr << "high_score обнулён!\n";
+      std::ofstream new_file(file_name);
+      new_file << 0;
+      new_file.close();
+      this->info->high_score = 0;
+    } else {
+      std::cerr << "high_score добавлен!\n";
+      file >> this->info->high_score;
+    }
     file.close();
-  }
-  return this->info->score;
 }
+
+// int Model::LoadScore(const std::string &file_name) {
+//   std::ifstream file(file_name);
+//   if (file.is_open()) {
+//     file >> this->info->high_score;
+//     file.close();
+//   }
+//   return this->info->score;
+// }
 
 }  // namespace s21
